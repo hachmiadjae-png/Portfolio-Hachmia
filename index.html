@@ -152,6 +152,31 @@
             animation-delay: 0.8s; /* Apparaît après le logo */
             opacity: 0;
         }
+
+        /* --- STYLES SLIDESHOW OUTILS --- */
+        .tools-container {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+        }
+        .tools-slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            pointer-events: none;
+        }
+        .tools-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+        @keyframes progress { from { width: 0%; } to { width: 100%; } }
+        .progress-bar-fill { animation: progress 5s linear infinite; }
     </style>
 
     <!-- NOTE HUBSPOT : Décommentez la ligne suivante si hébergé sur HubSpot -->
@@ -172,10 +197,18 @@
                 <p class="text-orange-500 text-sm md:text-base uppercase tracking-[0.4em] font-medium">Portfolio UX/UI</p>
             </div>
 
-            <!-- Bouton Commencer -->
-            <button id="start-btn" class="fade-in-up-delay mt-12 px-10 py-4 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white rounded-full font-bold uppercase tracking-widest transition-all duration-500 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] transform hover:scale-105 focus:outline-none">
-                Commencer l'expérience
-            </button>
+            <!-- SÉLECTION DE LANGUE -->
+            <div class="fade-in-up-delay mt-12 flex flex-col items-center gap-4">
+                <p class="text-neutral-500 text-xs uppercase tracking-widest mb-2">Choisir la langue / Select language</p>
+                <div class="flex gap-6">
+                    <button onclick="selectLanguage('fr')" class="w-32 py-3 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white rounded-full font-bold uppercase tracking-widest transition-all duration-500 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] transform hover:scale-105 focus:outline-none">
+                        Français
+                    </button>
+                    <button onclick="selectLanguage('en')" class="w-32 py-3 border border-neutral-700 text-neutral-400 hover:border-white hover:text-white rounded-full font-bold uppercase tracking-widest transition-all duration-500 transform hover:scale-105 focus:outline-none">
+                        English
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -184,21 +217,20 @@
         <div class="max-w-6xl mx-auto px-4 md:px-8">
             <div class="flex items-center justify-between h-20">
                 
-                <!-- LOGO (Fichier attendu : logo.png) -->
+                <!-- LOGO -->
                 <a href="/" class="text-xl font-bold text-white tracking-tight flex items-center gap-3 group">
                     <img src="logo.png" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" alt="Logo Hachmia DJAE" class="h-10 w-auto object-contain group-hover:opacity-80 transition-opacity">
-                    <!-- Fallback si pas de logo -->
                     <span class="hidden w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold group-hover:bg-orange-500 transition-colors">H</span>
                     <span>Hachmia DJAE</span>
                 </a>
 
                 <!-- Navigation Desktop -->
                 <nav class="hidden md:flex items-center gap-6 text-sm lg:text-base lg:gap-8">
-                    <a href="/" class="text-white font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Accueil</a>
-                    <a href="#projets-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Projets</a>
-                    <a href="#experience-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Parcours</a>
-                    <a href="#competences-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Compétences</a>
-                    <a href="#formations-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Formations</a>
+                    <a href="/" class="text-white font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full" data-i18n="nav_home">Accueil</a>
+                    <a href="#projets-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full" data-i18n="nav_projects">Projets</a>
+                    <a href="#experience-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full" data-i18n="nav_path">Parcours</a>
+                    <a href="#competences-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full" data-i18n="nav_skills">Compétences</a>
+                    <a href="#formations-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full" data-i18n="nav_education">Formations</a>
                     
                     <a href="mailto:hachmiadjae@gmail.com" class="px-5 py-2.5 bg-neutral-100 text-neutral-900 rounded-lg font-bold hover:bg-orange-500 hover:text-white transition-all">
                         Contact
@@ -214,12 +246,12 @@
             <!-- Navigation Mobile -->
             <div id="mobile-menu" class="md:hidden border-t border-neutral-800">
                 <nav class="flex flex-col py-4 gap-4">
-                    <a href="/" class="text-white px-4 hover:text-orange-500 transition-colors">Accueil</a>
-                    <a href="#projets-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Projets</a>
-                    <a href="#experience-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Parcours Pro</a>
-                    <a href="#competences-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Compétences</a>
-                    <a href="#formations-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Formations</a>
-                    <a href="mailto:hachmiadjae@gmail.com" class="text-orange-500 font-bold px-4">Me contacter</a>
+                    <a href="/" class="text-white px-4 hover:text-orange-500 transition-colors" data-i18n="nav_home">Accueil</a>
+                    <a href="#projets-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors" data-i18n="nav_projects">Projets</a>
+                    <a href="#experience-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors" data-i18n="nav_path">Parcours Pro</a>
+                    <a href="#competences-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors" data-i18n="nav_skills">Compétences</a>
+                    <a href="#formations-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors" data-i18n="nav_education">Formations</a>
+                    <a href="mailto:hachmiadjae@gmail.com" class="text-orange-500 font-bold px-4" data-i18n="nav_contact">Me contacter</a>
                 </nav>
             </div>
         </div>
@@ -235,7 +267,7 @@
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
-                À la recherche d'un stage (4-6 mois) • Dès Mars
+                <span data-i18n="badge_status">À la recherche d'un stage (4-6 mois) • Dès Mars</span>
             </div>
 
             <h2 class="text-xl md:text-2xl font-semibold text-neutral-300 mb-2">Hachmia DJAE</h2>
@@ -243,20 +275,18 @@
                 UX / UI <span class="animate-designer">Designer</span>
             </h1>
             
-            <div class="text-neutral-400 mb-8 leading-relaxed max-w-lg space-y-4 text-sm md:text-base">
-                <p>
-                    Issue d’un parcours orienté coordination, gestion de projet, marketing et communication, j’ai évolué dans des environnements concrets où l’organisation et la clarté sont essentielles. C’est en observant les usages réels, les frictions et les besoins du terrain que je me suis naturellement tournée vers le design UX/UI.
-                </p>
+            <!-- TEXTE DE PRÉSENTATION -->
+            <div class="text-neutral-400 mb-8 leading-relaxed max-w-lg text-sm md:text-base space-y-4" data-i18n="hero_desc">
+                <!-- Le contenu sera injecté par JS pour gérer le HTML -->
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4">
                 <a href="#projets-section" class="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:-translate-y-1 shadow-lg shadow-orange-900/40 text-center no-underline">
-                    Voir mes projets <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    <span data-i18n="btn_projects">Voir mes projets</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
                 
-                <!-- Lien CV : Fichier attendu CV-Hachmia DJAE.pdf -->
                 <a href="CV-Hachmia DJAE.pdf" download="CV-Hachmia DJAE.pdf" class="flex items-center justify-center gap-2 bg-transparent border border-neutral-700 hover:border-orange-500 text-neutral-300 hover:text-orange-500 px-6 py-3 rounded-lg font-medium transition-all cursor-pointer text-center no-underline">
-                    <i data-lucide="download" class="w-4 h-4"></i> Télécharger mon CV
+                    <i data-lucide="download" class="w-4 h-4"></i> <span data-i18n="btn_cv">Télécharger mon CV</span>
                 </a>
             </div>
 
@@ -271,7 +301,7 @@
                     <i data-lucide="layout" class="w-5 h-5"></i><span class="text-xs font-medium">UI Design</span>
                 </div>
                 <div class="flex flex-col items-center gap-1 hover:text-orange-500 transition-colors" title="Branding">
-                    <i data-lucide="palette" class="w-5 h-5"></i><span class="text-xs font-medium">Identité Visuelle</span>
+                    <i data-lucide="palette" class="w-5 h-5"></i><span class="text-xs font-medium" data-i18n="skill_branding">Identité Visuelle</span>
                 </div>
                 <div class="flex flex-col items-center gap-1 hover:text-orange-500 transition-colors" title="Prototypage">
                     <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i><span class="text-xs font-medium">Prototypage</span>
@@ -280,42 +310,50 @@
         </div>
 
         <div class="w-full md:w-1/2 bg-neutral-800 relative min-h-[300px] md:min-h-full order-1 md:order-2 group overflow-hidden">
-            <!-- PHOTO : Fichier attendu photo.jpg -->
             <img src="photo.jpg" onerror="this.src='https://placehold.co/800x1000/222/999?text=Photo+Profil';" alt="Hachmia DJAE" class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-neutral-900/30 opacity-60 mix-blend-multiply pointer-events-none"></div>
+            
+            <!-- BADGES QUALITÉS MINIMALISTES -->
+            <div class="absolute bottom-6 left-0 right-0 flex justify-center items-center gap-3 flex-wrap px-4 z-10 pointer-events-none">
+                <span class="text-white text-sm font-medium tracking-wide drop-shadow-md" data-i18n="qual_1">Solaire</span>
+                <span class="text-orange-500 text-xl font-bold">·</span>
+                <span class="text-white text-sm font-medium tracking-wide drop-shadow-md" data-i18n="qual_2">Persévérante</span>
+                <span class="text-orange-500 text-xl font-bold">·</span>
+                <span class="text-white text-sm font-medium tracking-wide drop-shadow-md" data-i18n="qual_3">Empathique</span>
+            </div>
         </div>
     </div>
 
     <!-- SECTION 2 : DASHBOARD -->
     <div class="max-w-4xl w-full mb-20 px-4">
         <div class="flex items-center justify-center gap-3 mb-6">
-            <h3 class="text-lg text-neutral-500 font-semibold uppercase tracking-widest text-xs">Vue d'ensemble</h3>
+            <h3 class="text-lg text-neutral-500 font-semibold uppercase tracking-widest text-xs" data-i18n="dashboard_title">Vue d'ensemble</h3>
         </div>
         <div class="bg-neutral-800 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl grid grid-cols-2 md:grid-cols-5 gap-[1px]">
             <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-100">
                 <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="briefcase" class="w-5 h-5"></i></div>
-                <span class="text-lg md:text-xl font-bold text-white mb-1">+3 Ans</span>
-                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">Expérience Pro</span>
+                <span class="text-lg md:text-xl font-bold text-white mb-1">+3 <span data-i18n="years">Ans</span></span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium" data-i18n="db_exp">Expérience Pro</span>
             </div>
             <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-200">
                 <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-                <span class="text-lg md:text-xl font-bold text-white mb-1">25 Ans</span>
+                <span class="text-lg md:text-xl font-bold text-white mb-1">25 <span data-i18n="years_old">Ans</span></span>
                 <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">Paris / Marseille</span>
             </div>
             <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-300">
                 <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="globe" class="w-5 h-5"></i></div>
-                <span class="text-lg md:text-xl font-bold text-white mb-1">Quadrilingue</span>
+                <span class="text-lg md:text-xl font-bold text-white mb-1" data-i18n="db_lang_title">Quadrilingue</span>
                 <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">FR / EN / ES / COM</span>
             </div>
             <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-400">
                 <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
                 <span class="text-lg md:text-xl font-bold text-white mb-1">Mobile</span>
-                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">France / Monde</span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium" data-i18n="db_mobility">France / Monde</span>
             </div>
             <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group col-span-2 md:col-span-1 animate-card delay-500">
                 <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="activity" class="w-5 h-5"></i></div>
-                <span class="text-lg md:text-xl font-bold text-white mb-1">Loisirs</span>
-                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">Tennis / Danse</span>
+                <span class="text-lg md:text-xl font-bold text-white mb-1" data-i18n="db_hobbies_title">Loisirs</span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium" data-i18n="db_hobbies_list">Tennis / Danse</span>
             </div>
         </div>
     </div>
@@ -324,46 +362,47 @@
     <div class="max-w-6xl w-full mb-16 px-4">
         <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
             <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
-            Mes atouts clés
+            <span data-i18n="assets_title">Mes atouts clés</span>
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/30 transition-all group">
                 <div class="w-12 h-12 bg-neutral-800 rounded-lg flex items-center justify-center mb-6 text-orange-500 group-hover:bg-orange-900/20"><i data-lucide="kanban" class="w-6 h-6"></i></div>
-                <h4 class="text-xl font-bold text-white mb-3">Gestion & Rigueur</h4>
-                <p class="text-neutral-400 text-sm leading-relaxed mb-4">Mon background en marketing et coordination de projets me permet de structurer mes projets design avec réalisme. Je sais respecter des délais et gérer les priorités.</p>
+                <h4 class="text-xl font-bold text-white mb-3" data-i18n="asset_1_title">Gestion & Rigueur</h4>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-4" data-i18n="asset_1_desc">Mon background en marketing et coordination de projets me permet de structurer mes projets design avec réalisme. Je sais respecter des délais et gérer les priorités.</p>
             </div>
             <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/30 transition-all group">
                 <div class="w-12 h-12 bg-neutral-800 rounded-lg flex items-center justify-center mb-6 text-orange-500 group-hover:bg-orange-900/20"><i data-lucide="mouse-pointer-2" class="w-6 h-6"></i></div>
-                <h4 class="text-xl font-bold text-white mb-3">Outils & Technique</h4>
-                <p class="text-neutral-400 text-sm leading-relaxed mb-4">Je suis à l'aise avec l'organisation de projets sur Notion et Trello (usages personnels et associatifs). En parallèle, je me forme activement à Figma et FigJam pour concevoir mes premières maquettes.</p>
+                <h4 class="text-xl font-bold text-white mb-3" data-i18n="asset_2_title">Outils & Technique</h4>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-4" data-i18n="asset_2_desc">Je suis à l'aise avec l'organisation de projets sur Notion et Trello (usages personnels et associatifs). En parallèle, je me forme activement à Figma et FigJam pour concevoir mes premières maquettes.</p>
             </div>
             <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/30 transition-all group">
                 <div class="w-12 h-12 bg-neutral-800 rounded-lg flex items-center justify-center mb-6 text-orange-500 group-hover:bg-orange-900/20"><i data-lucide="brain-circuit" class="w-6 h-6"></i></div>
-                <h4 class="text-xl font-bold text-white mb-3">Approche Humaine</h4>
-                <p class="text-neutral-400 text-sm leading-relaxed mb-4">Mes expériences en RH et services généraux m'ont appris la réactivité et l'esprit de synthèse. Quant à l'empathie, c'est ma nature : je cherche à comprendre le fonctionnement humain sans juger.</p>
+                <h4 class="text-xl font-bold text-white mb-3" data-i18n="asset_3_title">Approche Humaine</h4>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-4" data-i18n="asset_3_desc">Mes expériences en RH et services généraux m'ont appris la réactivité et l'esprit de synthèse. Quant à l'empathie, c'est ma nature : je cherche à comprendre le fonctionnement humain sans juger pour créer des solutions justes.</p>
             </div>
         </div>
     </div>
 
-    <!-- SECTION NOUVELLE : PARCOURS PROFESSIONNEL (Accordéon géant) -->
+    <!-- SECTION PARCOURS PROFESSIONNEL -->
     <section id="experience-section" class="max-w-6xl w-full mb-16 px-4">
-        <!-- Bouton Toggle -->
         <button id="exp-toggle-btn" class="w-full bg-neutral-900 p-6 md:p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/50 transition-all flex items-center justify-between group cursor-pointer text-left focus:outline-none shadow-lg">
             <div class="flex items-center gap-4 md:gap-6">
                 <div class="p-3 md:p-4 bg-orange-600/10 text-orange-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                    <i data-lucide="briefcase" class="w-6 h-6 md:w-8 md:h-8"></i>
+                    <!-- ICONE FILTRE DATE AJOUTÉE -->
+                    <i data-lucide="calendar-days" class="w-6 h-6 md:w-8 md:h-8"></i>
                 </div>
                 <div>
-                    <h3 class="text-xl md:text-2xl text-white font-bold mb-1 group-hover:text-orange-500 transition-colors">Parcours Professionnel</h3>
-                    <p class="text-neutral-400 text-xs md:text-sm">Découvrir mes expériences significatives (Cliquez pour dérouler)</p>
+                    <h3 class="text-xl md:text-2xl text-white font-bold mb-1 group-hover:text-orange-500 transition-colors" data-i18n="section_exp_title">Parcours Professionnel</h3>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="arrow-down-wide-narrow" class="w-3 h-3 text-orange-500"></i>
+                        <p class="text-neutral-400 text-xs md:text-sm" data-i18n="section_exp_subtitle">Trié par date (Récent -> Ancien)</p>
+                    </div>
                 </div>
             </div>
             <div id="exp-chevron-container" class="p-2 rounded-full bg-neutral-800 text-neutral-400 group-hover:bg-neutral-700 group-hover:text-white transition-all duration-300">
                 <i data-lucide="chevron-down" id="exp-chevron" class="w-5 h-5 md:w-6 md:h-6 transition-transform duration-300"></i>
             </div>
         </button>
-
-        <!-- Contenu Masqué -->
         <div id="experience-content" class="accordion-content">
             <div class="accordion-inner">
                 <div class="pt-8 px-2 md:px-4 relative">
@@ -373,12 +412,155 @@
             </div>
         </div>
     </section>
+    
+    <!-- SECTION NOUVELLE : MA BOÎTE À OUTILS (SLIDESHOW) -->
+    <div id="outils-section" class="max-w-6xl w-full mb-16 px-4">
+        <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
+            <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
+            <span data-i18n="section_tools_title">Ma Boîte à Outils</span>
+        </h3>
+
+        <!-- Container Glassmorphism -->
+        <div class="bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 rounded-2xl relative overflow-hidden tools-container">
+            
+            <!-- Slide 1: Design & Création -->
+            <div class="tools-slide active">
+                <div class="mb-6 flex gap-3 text-orange-500 bg-orange-900/20 px-4 py-2 rounded-full">
+                    <i data-lucide="pen-tool" class="w-5 h-5"></i>
+                    <span class="text-sm font-bold uppercase tracking-wider" data-i18n="tool_cat_design">Design & Création</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-orange-500 transition-all">
+                            <i data-lucide="figma" class="w-8 h-8 text-orange-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Figma</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-blue-500 transition-all">
+                            <i data-lucide="image" class="w-8 h-8 text-blue-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Photoshop</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-orange-600 transition-all">
+                            <i data-lucide="pen-tool" class="w-8 h-8 text-orange-600"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Illustrator</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-pink-600 transition-all">
+                            <i data-lucide="book-open" class="w-8 h-8 text-pink-600"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">InDesign</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-yellow-400 transition-all">
+                            <i data-lucide="layout-grid" class="w-8 h-8 text-yellow-400"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Miro</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Vidéo & Motion -->
+            <div class="tools-slide">
+                <div class="mb-6 flex gap-3 text-purple-500 bg-purple-900/20 px-4 py-2 rounded-full">
+                    <i data-lucide="video" class="w-5 h-5"></i>
+                    <span class="text-sm font-bold uppercase tracking-wider" data-i18n="tool_cat_video">Vidéo & Motion</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-purple-500 transition-all">
+                            <i data-lucide="scissors" class="w-8 h-8 text-purple-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">CapCut</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-cyan-500 transition-all">
+                            <i data-lucide="film" class="w-8 h-8 text-cyan-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Filmora</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Organisation & Gestion -->
+            <div class="tools-slide">
+                <div class="mb-6 flex gap-3 text-blue-500 bg-blue-900/20 px-4 py-2 rounded-full">
+                    <i data-lucide="kanban-square" class="w-5 h-5"></i>
+                    <span class="text-sm font-bold uppercase tracking-wider" data-i18n="tool_cat_org">Organisation</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-white transition-all">
+                            <i data-lucide="sticky-note" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Notion</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-blue-500 transition-all">
+                            <i data-lucide="trello" class="w-8 h-8 text-blue-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Trello</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-purple-400 transition-all">
+                            <i data-lucide="slack" class="w-8 h-8 text-purple-400"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Slack</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-yellow-500 transition-all">
+                            <i data-lucide="table" class="w-8 h-8 text-yellow-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Airtable</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Productivité & IA -->
+            <div class="tools-slide">
+                <div class="mb-6 flex gap-3 text-emerald-500 bg-emerald-900/20 px-4 py-2 rounded-full">
+                    <i data-lucide="cpu" class="w-5 h-5"></i>
+                    <span class="text-sm font-bold uppercase tracking-wider" data-i18n="tool_cat_prod">Productivité & IA</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-blue-400 transition-all">
+                            <i data-lucide="file-text" class="w-8 h-8 text-blue-400"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Office</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-emerald-500 transition-all">
+                            <i data-lucide="message-square" class="w-8 h-8 text-emerald-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">ChatGPT</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 h-16 bg-neutral-800 rounded-xl flex items-center justify-center border border-neutral-700 hover:border-indigo-500 transition-all">
+                            <i data-lucide="sparkles" class="w-8 h-8 text-indigo-500"></i>
+                        </div>
+                        <span class="text-xs text-neutral-400 group-hover:text-white">Gemini/Claude</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicateur de progression (Barre en bas) -->
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-neutral-800">
+                <div id="tools-progress" class="h-full bg-orange-500 w-0"></div>
+            </div>
+
+        </div>
+    </div>
+
 
     <!-- SECTION 4 : MES PROJETS & ENGAGEMENTS -->
     <div id="projets-section" class="max-w-6xl w-full mb-16 px-4">
         <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
             <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
-            Mes Projets & Engagements
+            <span data-i18n="section_projects_title">Mes Projets & Engagements</span>
         </h3>
         <!-- Grille responsive : 1 col mobile, 2 col tablette, 3 col desktop -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -390,37 +572,37 @@
                     <i data-lucide="pen-tool" class="w-12 h-12 text-purple-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
                 </div>
                 <div class="p-6">
-                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Identité Visuelle</h4>
-                    <p class="text-neutral-400 text-sm mb-4">Création de marque & charte graphique.</p>
-                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le détail <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500" data-i18n="project_1_title">Identité Visuelle</h4>
+                    <p class="text-neutral-400 text-sm mb-4" data-i18n="project_1_desc">Création de marque & charte graphique.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1"><span data-i18n="btn_view_detail">Voir le détail</span> <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
                 </div>
             </div>
             
-            <!-- Projet 2 : App de veille de voyage -->
-            <a href="app-voyage.pdf" target="_blank" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full">
+            <!-- Projet 2 : App de veille de voyage (MODALE + PDF) -->
+            <div onclick="openAppVoyageModal()" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full cursor-pointer">
                 <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
                     <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 to-neutral-900"></div>
                     <i data-lucide="smartphone" class="w-12 h-12 text-indigo-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
                 </div>
                 <div class="p-6">
-                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">App de veille de voyage</h4>
-                    <p class="text-neutral-400 text-sm mb-4">Application de veille et d'organisation pour voyageurs.</p>
-                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le PDF <i data-lucide="download" class="w-3 h-3"></i></span>
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500" data-i18n="project_2_title">App de veille de voyage</h4>
+                    <p class="text-neutral-400 text-sm mb-4" data-i18n="project_2_desc">Application de veille et d'organisation pour voyageurs.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1"><span data-i18n="btn_view_detail">Voir le détail</span> <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
                 </div>
-            </a>
+            </div>
 
             <!-- Projet 3 : UX SNCF -->
-            <a href="ux-sncf.pdf" target="_blank" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full">
+            <div onclick="openSncfModal()" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full cursor-pointer">
                 <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-900 to-neutral-900"></div>
                     <i data-lucide="train" class="w-12 h-12 text-blue-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
                 </div>
                 <div class="p-6">
-                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">UX SNCF</h4>
-                    <p class="text-neutral-400 text-sm mb-4">Optimisation de l'expérience utilisateur Junior & Cie.</p>
-                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le projet <i data-lucide="eye" class="w-3 h-3"></i></span>
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">SNCF Connect</h4>
+                    <p class="text-neutral-400 text-sm mb-4" data-i18n="project_3_desc">Prototype UX pour la mobilité courte.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1"><span data-i18n="btn_view_project">Voir le projet</span> <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
                 </div>
-            </a>
+            </div>
 
             <!-- Projet 4 : Cas Ekin Sport (MODIFIÉ POUR MODALE) -->
             <div onclick="openEkinModal()" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full cursor-pointer">
@@ -430,8 +612,8 @@
                 </div>
                 <div class="p-6">
                     <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Cas Market Ekin Sport</h4>
-                    <p class="text-neutral-400 text-sm mb-4">Analyse stratégique marketing et recommandations.</p>
-                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le cas <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                    <p class="text-neutral-400 text-sm mb-4" data-i18n="project_4_desc">Analyse stratégique marketing et recommandations.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1"><span data-i18n="btn_view_case">Voir le cas</span> <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
                 </div>
             </div>
 
@@ -443,8 +625,8 @@
                 </div>
                 <div class="p-6">
                     <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Projet MDA</h4>
-                    <p class="text-neutral-400 text-sm mb-4">Coordination événementielle (Camping Évasion).</p>
-                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le détail <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                    <p class="text-neutral-400 text-sm mb-4" data-i18n="project_5_desc">Coordination événementielle (Camping Évasion).</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1"><span data-i18n="btn_view_detail">Voir le détail</span> <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
                 </div>
             </div>
 
@@ -456,8 +638,8 @@
                 </div>
                 <div class="p-6">
                     <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Aide et Action</h4>
-                    <p class="text-neutral-400 text-sm mb-4">Projet solidaire & organisationnel (BTS SAM).</p>
-                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le détail <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                    <p class="text-neutral-400 text-sm mb-4" data-i18n="project_6_desc">Projet solidaire & organisationnel (BTS SAM).</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1"><span data-i18n="btn_view_detail">Voir le détail</span> <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
                 </div>
             </div>
 
@@ -468,7 +650,7 @@
     <div id="competences-section" class="max-w-6xl w-full mb-16 px-4">
         <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
             <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
-            Compétences & Expertises
+            <span data-i18n="section_skills_title">Compétences & Expertises</span>
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="skills-container"></div>
     </div>
@@ -477,7 +659,7 @@
     <div id="formations-section" class="max-w-6xl w-full mb-12 px-4">
         <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
             <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
-            Mes Formations
+            <span data-i18n="section_edu_title">Mes Formations</span>
         </h3>
         <div class="relative w-full overflow-hidden mask-gradient-sides">
             <div class="absolute top-0 left-0 w-16 h-full bg-gradient-to-r from-neutral-950 to-transparent z-10 pointer-events-none"></div>
@@ -491,12 +673,12 @@
         <div class="max-w-6xl mx-auto px-4 md:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                 <div>
-                    <!-- LOGO FOOTER (Renommé logo.png) -->
+                    <!-- LOGO FOOTER -->
                     <a href="/" class="text-xl font-bold text-white flex items-center gap-3 mb-4">
                         <img src="logo.png" alt="Logo Hachmia DJAE" class="h-10 w-auto object-contain">
                         <span>Hachmia DJAE</span>
                     </a>
-                    <p class="text-neutral-400 text-sm mb-6">UX/UI Designer engagée dans la création d'expériences numériques intuitives et centrées sur l'humain.</p>
+                    <p class="text-neutral-400 text-sm mb-6" data-i18n="footer_desc">UX/UI Designer engagée dans la création d'expériences numériques intuitives et centrées sur l'humain.</p>
                     <div class="flex gap-4">
                         <a href="https://linkedin.com" target="_blank" class="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-orange-500 hover:text-white transition-all"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
                         <a href="mailto:hachmiadjae@gmail.com" class="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-orange-500 hover:text-white transition-all"><i data-lucide="mail" class="w-5 h-5"></i></a>
@@ -505,17 +687,17 @@
                 <div>
                     <h4 class="text-white font-bold mb-6">Navigation</h4>
                     <ul class="space-y-3 text-sm text-neutral-400">
-                        <li><a href="/" class="hover:text-orange-500">Accueil</a></li>
-                        <li><a href="#projets-section" class="hover:text-orange-500">Mes Projets</a></li>
-                        <li><a href="#experience-section" class="hover:text-orange-500">Parcours</a></li>
-                        <li><a href="#competences-section" class="hover:text-orange-500">Compétences</a></li>
-                        <li><a href="#formations-section" class="hover:text-orange-500">Formations</a></li>
+                        <li><a href="/" class="hover:text-orange-500" data-i18n="nav_home">Accueil</a></li>
+                        <li><a href="#projets-section" class="hover:text-orange-500" data-i18n="nav_projects">Mes Projets</a></li>
+                        <li><a href="#experience-section" class="hover:text-orange-500" data-i18n="nav_path">Parcours</a></li>
+                        <li><a href="#competences-section" class="hover:text-orange-500" data-i18n="nav_skills">Compétences</a></li>
+                        <li><a href="#formations-section" class="hover:text-orange-500" data-i18n="nav_education">Formations</a></li>
                         <li><a href="CV-Hachmia DJAE.pdf" download="CV-Hachmia DJAE.pdf" class="hover:text-orange-500">Mon CV</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-6">Me Contacter</h4>
-                    <p class="text-neutral-400 text-sm mb-6">À la recherche d'un stage de 6 mois. Disponible dès Mars.</p>
+                    <h4 class="text-white font-bold mb-6" data-i18n="footer_contact_title">Me Contacter</h4>
+                    <p class="text-neutral-400 text-sm mb-6" data-i18n="footer_contact_desc">À la recherche d'un stage de 6 mois. Disponible dès Mars.</p>
                     <div class="flex flex-col gap-4 text-sm text-neutral-300">
                         <a href="mailto:hachmiadjae@gmail.com" class="flex items-center gap-3 hover:text-orange-500 group"><div class="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center group-hover:bg-orange-500/20"><i data-lucide="mail" class="w-4 h-4 text-orange-500"></i></div><span>hachmiadjae@gmail.com</span></a>
                         <a href="tel:0749065994" class="flex items-center gap-3 hover:text-orange-500 group"><div class="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center group-hover:bg-orange-500/20"><i data-lucide="phone" class="w-4 h-4 text-orange-500"></i></div><span>07 49 06 ** **</span></a>
@@ -528,7 +710,139 @@
         </div>
     </footer>
 
-    <!-- MODALES -->
+    <!-- MODALES et SCRIPTS -->
+    
+    <!-- MODAL APP VEILLE VOYAGE (NOUVELLE) -->
+    <div id="app-voyage-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="modal-content bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl relative shadow-2xl">
+            <div class="sticky top-0 bg-neutral-900/95 backdrop-blur border-b border-neutral-800 p-6 flex justify-between items-start z-10">
+                <div>
+                    <span class="text-xs font-mono text-indigo-400 bg-indigo-900/10 px-2 py-1 rounded border border-indigo-500/20 mb-2 inline-block">Projet UX/UI • Agence Badaboom</span>
+                    <h2 class="text-2xl font-bold text-white leading-tight">Application de veille voyage</h2>
+                    <p class="text-neutral-400 text-sm">Débriefing projet UX/UI (Projet fictif d'école en cours d'UX - Prépa Mastère)</p>
+                </div>
+                <button onclick="closeAppVoyageModal()" class="p-2 bg-neutral-800 rounded-full hover:bg-neutral-700 text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 space-y-8 text-neutral-300">
+                <!-- Contexte & Problématique -->
+                <div class="bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
+                    <p class="text-sm italic mb-2">"L’agence Badaboom a été sollicitée pour concevoir un outil de veille digitale personnalisable, destiné à un large public."</p>
+                    <p class="text-xs text-neutral-400"><strong>Problématique :</strong> Comment proposer une application mobile de veille permettant un accès rapide, structuré et rassurant à l’information, sans générer de surcharge informationnelle ?</p>
+                </div>
+
+                <!-- Thématique & Cibles -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2"><i data-lucide="map" class="w-5 h-5 text-indigo-500"></i> Thématique & Cibles</h3>
+                    <ul class="space-y-2 text-sm text-neutral-400 mb-3">
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0"></div><span><strong>Thème :</strong> Voyage en Europe, focus hébergement (point de friction majeur).</span></li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-neutral-800 rounded text-xs text-neutral-300">Voyageurs occasionnels</span>
+                        <span class="px-2 py-1 bg-neutral-800 rounded text-xs text-neutral-300">Étudiants/Jeunes actifs</span>
+                        <span class="px-2 py-1 bg-neutral-800 rounded text-xs text-neutral-300">Public peu technophile</span>
+                    </div>
+                </div>
+
+                <!-- Recherche UX -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="search" class="w-4 h-4 text-indigo-400"></i> Recherche & Insights</h4>
+                         <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• <strong>Recherche primaire :</strong> Entretiens guérilla.</li>
+                            <li>• <strong>Recherche secondaire :</strong> Benchmark (Booking, Airbnb...).</li>
+                            <li>• <strong>Constats :</strong> Usage mobile, friction hébergement, budget central, surcharge info.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="smartphone" class="w-4 h-4 text-indigo-400"></i> Solution MVP</h4>
+                        <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• Veille limitée à l'Europe (Hébergement/Budget).</li>
+                            <li>• Flux personnalisé & Notifications paramétrables.</li>
+                            <li>• Sources vérifiées pour la réassurance.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Enjeux & Compétences -->
+                 <div>
+                     <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-orange-500"></i> Ce que ce projet démontre</h3>
+                     <p class="text-sm text-neutral-400 mb-2">Capacité à analyser un besoin complexe, structurer l’information, concevoir une expérience mobile-first et prioriser un MVP réaliste.</p>
+                </div>
+
+                <div class="pt-4 flex justify-center">
+                    <a href="app-voyage-ux.pdf" target="_blank" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-bold transition-all w-full md:w-auto justify-center"><i data-lucide="file-text" class="w-4 h-4"></i> Voir le dossier complet (PDF)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL SNCF CONNECT (NOUVELLE) -->
+    <div id="sncf-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="modal-content bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl relative shadow-2xl">
+            <div class="sticky top-0 bg-neutral-900/95 backdrop-blur border-b border-neutral-800 p-6 flex justify-between items-start z-10">
+                <div>
+                    <span class="text-xs font-mono text-blue-400 bg-blue-900/10 px-2 py-1 rounded border border-blue-500/20 mb-2 inline-block">Projet Académique • UX/UI</span>
+                    <h2 class="text-2xl font-bold text-white leading-tight">SNCF Connect</h2>
+                    <p class="text-neutral-400 text-sm">Prototype UX pour la mobilité courte</p>
+                </div>
+                <button onclick="closeSncfModal()" class="p-2 bg-neutral-800 rounded-full hover:bg-neutral-700 text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 space-y-8 text-neutral-300">
+                <!-- Contexte & Problématique -->
+                <div class="bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
+                    <p class="text-sm italic mb-2">"Projet exploratoire suite à une intervention de la SNCF à l'école. L'objectif : repenser l'usage de l'application pour les trajets du quotidien."</p>
+                    <p class="text-xs text-neutral-400"><strong>Problématique :</strong> Comment permettre à SNCF Connect de mieux répondre aux usages de mobilité courte et du quotidien, tout en conservant une expérience simple, lisible et cohérente ?</p>
+                </div>
+
+                <!-- Objectifs -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2"><i data-lucide="target" class="w-5 h-5 text-blue-500"></i> Objectifs du Projet</h3>
+                    <ul class="space-y-2 text-sm text-neutral-400 list-disc list-inside">
+                        <li>Valoriser les usages de mobilité courte.</li>
+                        <li>Clarifier la proposition de valeur pour le quotidien.</li>
+                        <li>Favoriser l'adoption et l'engagement.</li>
+                        <li>Expérience mobile-first adaptée aux usages réels.</li>
+                    </ul>
+                </div>
+
+                <!-- Démarche UX & Solution -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="search" class="w-4 h-4 text-blue-400"></i> Démarche & Hypothèses</h4>
+                         <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• Analyse des usages existants.</li>
+                            <li>• Hypothèse : App perçue comme "Longue distance" uniquement.</li>
+                            <li>• Définition d'objectifs produit (OKR).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="smartphone" class="w-4 h-4 text-blue-400"></i> Solution Proposée</h4>
+                        <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• 9 écrans prototypes conçus sur Figma.</li>
+                            <li>• Recherche trajets courts & Itinéraires quotidien.</li>
+                            <li>• Intégration fluide des titres de transport.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                 <!-- Compétences -->
+                 <div>
+                     <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2"><i data-lucide="award" class="w-5 h-5 text-orange-500"></i> Ce que ce projet démontre</h3>
+                     <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-neutral-800 rounded text-xs text-neutral-300">Analyse produit</span>
+                        <span class="px-2 py-1 bg-neutral-800 rounded text-xs text-neutral-300">Enjeux business</span>
+                        <span class="px-2 py-1 bg-neutral-800 rounded text-xs text-neutral-300">Réflexion UX</span>
+                        <span class="px-2 py-1 bg-neutral-800 rounded text-xs text-neutral-300">Prototypage</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-center">
+                    <a href="ux-sncf.pdf" target="_blank" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-bold transition-all w-full md:w-auto justify-center"><i data-lucide="file-text" class="w-4 h-4"></i> Voir le projet complet (PDF)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL MDA -->
     <div id="mda-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
         <div class="modal-content bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl relative shadow-2xl">
@@ -566,6 +880,15 @@
                             <li>• Gestion des stocks (Nourriture, Matériel)</li>
                             <li>• Commandes fournisseurs (Sécurité, Covid)</li>
                         </ul>
+                    </div>
+                </div>
+                <div class="border-t border-neutral-800 pt-6">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Compétences Clés Mobilisées</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Gestion de Projet</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Coordination</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Logistique</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Travail d'équipe</span>
                     </div>
                 </div>
             </div>
@@ -694,22 +1017,394 @@
         // === GESTION DU SPLASH SCREEN ===
         const splashScreen = document.getElementById('splash-screen');
         const startBtn = document.getElementById('start-btn');
+        // Initialiser overflow: hidden par sécurité pour le splash screen
+        document.body.classList.add('overflow-hidden');
+        document.body.style.overflow = 'hidden';
 
-        if(splashScreen && startBtn) {
-            // Empêcher le scroll dès le chargement
-            document.body.style.overflow = 'hidden';
+        // === GESTION DU SLIDESHOW OUTILS ===
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.tools-slide');
+        const progressBar = document.getElementById('tools-progress');
+        let slideInterval;
 
-            startBtn.addEventListener('click', () => {
-                // Ajouter la classe pour cacher (opacité + visibility)
-                splashScreen.classList.add('hidden-splash');
+        function startSlideshow() {
+            // Ajouter la barre de progression animée
+            progressBar.classList.add('progress-bar-fill');
+            
+            slideInterval = setInterval(() => {
+                // Masquer slide actuelle
+                slides[currentSlide].classList.remove('active');
                 
-                // Réactiver le scroll après la transition
-                setTimeout(() => {
-                    document.body.style.overflow = '';
-                    splashScreen.style.display = 'none'; // Retirer complètement du flux
-                }, 800); // 0.8s correspond à la durée de transition CSS
-            });
+                // Calculer prochaine slide
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                // Afficher nouvelle slide
+                slides[currentSlide].classList.add('active');
+                
+                // Reset animation barre (hack pour relancer l'anim CSS)
+                progressBar.classList.remove('progress-bar-fill');
+                void progressBar.offsetWidth; // trigger reflow
+                progressBar.classList.add('progress-bar-fill');
+                
+            }, 5000); // 5 secondes
         }
+
+
+        // DICTIONNAIRE DE TRADUCTION AVEC DONNÉES DYNAMIQUES
+        const translations = {
+            fr: {
+                nav_home: "Accueil",
+                nav_projects: "Projets",
+                nav_path: "Parcours Pro",
+                nav_skills: "Compétences",
+                nav_education: "Formations",
+                nav_contact: "Contact",
+                badge_status: "À la recherche d'un stage (4-6 mois) • Dès Mars",
+                hero_desc: "<p class=\"mb-3 text-neutral-400\">Issue d’un parcours orienté <strong class=\"text-white\">coordination, gestion de projet & marketing</strong>, j’ai évolué dans des environnements concrets où l’organisation et la clarté sont essentielles.</p><p class=\"mb-3 text-neutral-400\">C’est en observant les <span class=\"text-neutral-400 border-b border-orange-500/50 pb-0.5\">usages réels</span>, les frictions et les besoins du terrain que je me suis naturellement tournée vers le <strong class=\"text-orange-500\">Design UX/UI</strong>.</p><p class=\"text-neutral-400\">Quand je travaille sur un projet de design, je ne vois pas le temps passer : <strong>analyser, structurer et concevoir</strong> s’enchaîne de manière logique. Le design est devenu pour moi un espace naturel de réflexion et de création, où <span class=\"text-white italic\">chaque choix a du sens</span>.</p>",
+                btn_projects: "Voir mes projets",
+                btn_cv: "Télécharger mon CV",
+                qual_1: "Solaire",
+                qual_2: "Persévérante",
+                qual_3: "Empathique",
+                skill_branding: "Identité Visuelle",
+                dashboard_title: "Vue d'ensemble",
+                years: "Ans",
+                years_old: "Ans",
+                db_exp: "Expérience Pro",
+                db_lang_title: "Quadrilingue",
+                db_mobility: "France / Monde",
+                db_hobbies_title: "Loisirs",
+                db_hobbies_list: "Tennis / Danse",
+                assets_title: "Mes atouts clés",
+                asset_1_title: "Gestion & Rigueur",
+                asset_1_desc: "Mon background en marketing et coordination de projets me permet de structurer mes projets design avec réalisme. Je sais respecter des délais et gérer les priorités.",
+                asset_2_title: "Outils & Technique",
+                asset_2_desc: "Je suis à l'aise avec l'organisation de projets sur Notion et Trello (usages personnels et associatifs). En parallèle, je me forme activement à Figma et FigJam pour concevoir mes premières maquettes.",
+                asset_3_title: "Approche Humaine",
+                asset_3_desc: "Mes expériences en RH et services généraux m'ont appris la réactivité et l'esprit de synthèse. Quant à l'empathie, c'est ma nature : je cherche à comprendre le fonctionnement humain sans juger pour créer des solutions justes.",
+                section_exp_title: "Parcours Professionnel",
+                section_exp_subtitle: "Découvrir mes expériences significatives (Cliquez pour dérouler)",
+                section_projects_title: "Mes Projets & Engagements",
+                project_1_title: "Identité Visuelle",
+                project_1_desc: "Création de marque & charte graphique.",
+                btn_view_detail: "Voir le détail",
+                project_2_title: "App de veille de voyage",
+                project_2_desc: "Application de veille et d'organisation pour voyageurs.",
+                btn_view_pdf: "Voir le PDF",
+                project_3_desc: "Optimisation de l'expérience utilisateur Junior & Cie.",
+                btn_view_project: "Voir le projet",
+                project_4_desc: "Analyse stratégique marketing et recommandations.",
+                btn_view_case: "Voir le cas",
+                project_5_desc: "Coordination événementielle (Camping Évasion).",
+                project_6_desc: "Projet solidaire & organisationnel (BTS SAM).",
+                section_skills_title: "Compétences & Expertises",
+                section_edu_title: "Mes Formations",
+                section_tools_title: "Ma Boîte à Outils",
+                tool_cat_design: "Design & Création",
+                tool_cat_video: "Vidéo & Motion",
+                tool_cat_org: "Organisation",
+                tool_cat_prod: "Productivity & IA",
+                footer_desc: "UX/UI Designer engagée dans la création d'expériences numériques intuitives et centrées sur l'humain.",
+                footer_contact_title: "Me Contacter",
+                footer_contact_desc: "À la recherche d'un stage de 6 mois. Disponible dès Mars.",
+                experiences: [
+                    { role: "Coordinatrice Transport VIP (JO 2024)", company: "On Location", year: "2024", contract: "Mission / CDD", color: "blue", icon: "car", desc: "JO 2024 : Formation des chauffeurs sur l'app de tracking. Briefings sécurité avant-trajet, gestion des téléphones et suivi complet (check-in/out) pour assurer la conformité des missions." },
+                    { role: "Community Manager & Commerciale", company: "L'Orange Bleue", year: "2023", contract: "Alternance", color: "orange", icon: "instagram", desc: "Création de contenus réseaux sociaux, mise en avant de l'activité et gestion de la relation adhérents." },
+                    { role: "Agent Services Généraux", company: "SYNERGIE", year: "2022", contract: "CDD / Intérim", color: "blue", icon: "settings", desc: "Support logistique, coordination des fournisseurs et gestion des besoins des agences." },
+                    { role: "Marketing & Stratégie", company: "Ekin Sport", year: "2022", contract: "Projet Académique", color: "yellow", icon: "target", desc: "Analyse d'un cas client complet et élaboration de recommandations stratégiques." },
+                    { role: "Chargée de Com & Évènementiel", company: "MDA", year: "2022", contract: "Stage", color: "purple", icon: "party-popper", desc: "Organisation du Week-end camping Evasion (1500 participants). Logistique et communication." },
+                    { role: "Assistante Administrative", company: "Crédit Mutuel Leasing", year: "2021", contract: "CDD", color: "blue", icon: "file-text", desc: "Gestion des tickets informatiques internes, suivi des mobilités et mouvements collaborateurs." },
+                    { role: "Chargée de Recrutement", company: "City One", year: "2021", contract: "Stage", color: "purple", icon: "users", desc: "Sourcing, entretiens, sélection des profils et suivi des équipes terrain." },
+                    { role: "Assistante RH", company: "Leroy Merlin", year: "2020", contract: "Stage", color: "purple", icon: "user-plus", desc: "Création de supports d'intégration (onboarding) pour les nouveaux collaborateurs." },
+                    { role: "Animatrice", company: "Junior & Cie (SNCF)", year: "2020-2024", contract: "Job Étudiant", color: "emerald", icon: "train", desc: "Accompagnement d'enfants de 4 à 14 ans à bord des TGV. Responsable de la sécurité et de l'animation lors de voyages à travers la France." }
+                ],
+                skills: [
+                    { title: "UX DESIGN (en formation)", items: ["Recherche utilisateur (observations, analyse des besoins)", "Personas et cartes d’empathie", "Parcours utilisateurs (user journey)", "Architecture de l’information", "Wireframes et prototypage (Figma)", "Tests utilisateurs et itérations", "Formation UX/UI – certification Google UX Design (en cours)"] },
+                    { title: "DESIGN VISUEL & OUTILS GRAPHIQUES", items: ["Bases en Photoshop, Illustrator et InDesign", "Mise en page et grilles", "Hiérarchie visuelle", "Typographie et couleurs", "Création de supports digitaux et print"] },
+                    { title: "GESTION DE PROJET", items: ["Coordination et planification", "Organisation des priorités", "Suivi des actions et livrables", "Travail en transversalité", "Respect des délais et contraintes"] },
+                    { title: "MARKETING & ANALYSE", items: ["Études de marché", "Benchmark concurrentiel", "Analyse des cibles", "Analyse de parcours existants", "Identification des points de friction", "Veille et compréhension des enjeux business"] },
+                    { title: "COMMUNICATION & COMMUNITY MANAGEMENT", items: ["Animation de communauté", "Création de contenus visuels et vidéos promotionnelles", "Réalisation d’interviews", "Élaboration de plannings éditoriaux", "Planification et programmation via Meta", "Communication autour de projets et événements"] },
+                    { title: "PRODUCTION VIDÉO & AUDIOVISUEL", items: ["Montage de vidéos promotionnelles", "Formats courts pour réseaux sociaux", "Valorisation d’événements", "Storytelling visuel", "Adaptation des contenus aux plateformes"] },
+                    { title: "COMMERCIAL & RELATION CLIENT", items: ["Accueil et accompagnement client", "Analyse des besoins", "Présentation et vente d’offres", "Argumentation commerciale", "Suivi et fidélisation", "Gestion des objections et situations sensibles"] },
+                    { title: "ÉVÈNEMENTIEL & COORDINATION", items: ["Organisation et coordination d’événements", "Gestion des plannings et des priorités", "Accueil et prise en charge de publics (dont VIP)", "Coordination d’équipes et d’intervenants", "Communication événementielle", "Gestion des imprévus et respect des timings"] },
+                    { title: "RESSOURCES HUMAINES & COORDINATION", items: ["Coordination d’équipes et d’intervenants", "Gestion des plannings", "Communication interne", "Interface entre équipes, prestataires et direction", "Suivi opérationnel des ressources"] },
+                    { title: "ADMINISTRATIF & GESTION OPÉRATIONNELLE", items: ["Gestion administrative et suivi de dossiers", "Facturation et suivi des paiements", "Organisation et archivage de documents", "Structuration de l’information", "Respect des procédures"] }
+                ],
+                education: [
+                    { year: "2025 (En cours)", degree: "Prépa Mastère Digital", school: "Digital Campus", icon: "graduation-cap" },
+                    { year: "En cours", degree: "Certificat Google UX Design", school: "Google Career Certificates", icon: "award" },
+                    { year: "En cours", degree: "Spécialisation UX Research", school: "University of Michigan", icon: "search" },
+                    { year: "2022-2023", degree: "Bachelor Management du Sport", school: "Sport Management School", icon: "trophy" },
+                    { year: "2020-2022", degree: "BTS Support à l'Action Manageriale", school: "Lycée Marie Curie", icon: "file-text" },
+                    { year: "2021", degree: "BAFA", school: "Brevet d'Aptitude aux Fonctions d'Animateur", icon: "users" },
+                    { year: "2018", degree: "Baccalauréat ES", school: "Lycée Denis Diderot", icon: "graduation-cap" }
+                ]
+            },
+            en: {
+                nav_home: "Home",
+                nav_projects: "Projects",
+                nav_path: "Experience",
+                nav_skills: "Skills",
+                nav_education: "Education",
+                nav_contact: "Contact",
+                badge_status: "Looking for an internship (4-6 months) • From March",
+                hero_desc: "<p class=\"mb-3 text-neutral-400\">Coming from a background in <strong class=\"text-white\">coordination, management & marketing</strong>, I evolved in environments where clarity is essential.</p><p class=\"mb-3 text-neutral-400\">By observing <span class=\"text-neutral-400 border-b border-orange-500/50 pb-0.5\">real-world usage</span> and friction points, I naturally turned to <strong class=\"text-orange-500\">UX/UI Design</strong>.</p><p class=\"text-neutral-400\">When I work on a design project, time flies: <strong>analyzing, structuring, and designing</strong> follow a logical flow. Design has become for me a natural space for reflection and creation, where <span class=\"text-white italic\">every choice matters</span>.</p>",
+                btn_projects: "See my projects",
+                btn_cv: "Download my CV",
+                qual_1: "Radiant",
+                qual_2: "Persistent",
+                qual_3: "Empathetic",
+                skill_branding: "Visual Identity",
+                dashboard_title: "Overview",
+                years: "Years",
+                years_old: "Years old",
+                db_exp: "Pro Experience",
+                db_lang_title: "Quadrilingual",
+                db_mobility: "France / World",
+                db_hobbies_title: "Hobbies",
+                db_hobbies_list: "Tennis / Dance",
+                assets_title: "Key Assets",
+                asset_1_title: "Management & Rigor",
+                asset_1_desc: "My background in marketing and project coordination allows me to structure design projects realistically. I know how to meet deadlines and manage priorities.",
+                asset_2_title: "Tools & Technique",
+                asset_2_desc: "I am comfortable organizing projects on Notion and Trello (personal and associative uses). In parallel, I am actively training in Figma and FigJam to design my first mockups.",
+                asset_3_title: "Human Approach",
+                asset_3_desc: "My experiences in HR and general services taught me responsiveness and synthesis. As for empathy, it's my nature: I seek to understand human behavior without judgment to create fair solutions.",
+                section_exp_title: "Professional Experience",
+                section_exp_subtitle: "Discover my significant experiences (Click to expand)",
+                section_projects_title: "My Projects & Commitments",
+                project_1_title: "Visual Identity",
+                project_1_desc: "Brand creation & graphic charter.",
+                btn_view_detail: "View details",
+                project_2_title: "Travel Watch App",
+                project_2_desc: "Watch and organization application for travelers.",
+                btn_view_pdf: "View PDF",
+                project_3_desc: "User experience optimization for Junior & Cie.",
+                btn_view_project: "View project",
+                project_4_desc: "Strategic marketing analysis and recommendations.",
+                btn_view_case: "View case study",
+                project_5_desc: "Event coordination (Camping Evasion).",
+                project_6_desc: "Solidarity & organizational project (BTS SAM).",
+                section_skills_title: "Skills & Expertise",
+                section_edu_title: "Education",
+                section_tools_title: "My Toolbox",
+                tool_cat_design: "Design & Creation",
+                tool_cat_video: "Video & Motion",
+                tool_cat_org: "Organization",
+                tool_cat_prod: "Productivity & AI",
+                footer_desc: "UX/UI Designer committed to creating intuitive and human-centered digital experiences.",
+                footer_contact_title: "Contact Me",
+                footer_contact_desc: "Looking for a 6-month internship. Available from March.",
+                experiences: [
+                    { role: "VIP Transport Coordinator (2024 Olympics)", company: "On Location", year: "2024", contract: "Mission / Fixed-term", color: "blue", icon: "car", desc: "2024 Olympics: Driver training on tracking & safety app. Pre-trip briefings, equipment checks, and end-to-end mission monitoring (check-in/out) to ensure trip compliance." },
+                    { role: "Community Manager & Sales", company: "L'Orange Bleue", year: "2023", contract: "Apprenticeship", color: "orange", icon: "instagram", desc: "Social media content creation, activity promotion, and member relationship management." },
+                    { role: "General Services Agent", company: "SYNERGIE", year: "2022", contract: "Fixed-term / Interim", color: "blue", icon: "settings", desc: "Logistical support, supplier coordination, and agency needs management." },
+                    { role: "Marketing & Strategy", company: "Ekin Sport", year: "2022", contract: "Academic Project", color: "yellow", icon: "target", desc: "Complete client case analysis and development of strategic recommendations." },
+                    { role: "Communication & Events Officer", company: "MDA", year: "2022", contract: "Internship", color: "purple", icon: "party-popper", desc: "Organization of the Evasion camping weekend (1500 participants). Logistics and communication." },
+                    { role: "Administrative Assistant", company: "Crédit Mutuel Leasing", year: "2021", contract: "Fixed-term", color: "blue", icon: "file-text", desc: "Management of internal IT tickets, monitoring of mobility and employee movements." },
+                    { role: "Recruitment Officer", company: "City One", year: "2021", contract: "Internship", color: "purple", icon: "users", desc: "Sourcing, interviews, profile selection, and field team monitoring." },
+                    { role: "HR Assistant", company: "Leroy Merlin", year: "2020", contract: "Internship", color: "purple", icon: "user-plus", desc: "Creation of onboarding materials for new employees." },
+                    { role: "Animator", company: "Junior & Cie (SNCF)", year: "2020-2024", contract: "Student Job", color: "emerald", icon: "train", desc: "Accompaniment of children aged 4 to 14 on board TGV trains. Responsible for safety and entertainment during trips across France." }
+                ],
+                skills: [
+                    { title: "UX DESIGN (in training)", items: ["User research (observations, needs analysis)", "Personas and empathy maps", "User journeys", "Information architecture", "Wireframes and prototyping (Figma)", "User testing and iterations", "UX/UI Training – Google UX Design Certification (in progress)"] },
+                    { title: "VISUAL DESIGN & GRAPHIC TOOLS", items: ["Basics in Photoshop, Illustrator, and InDesign", "Layout and grids", "Visual hierarchy", "Typography and colors", "Creation of digital and print supports"] },
+                    { title: "PROJECT MANAGEMENT", items: ["Coordination and planning", "Prioritization", "Action and deliverable tracking", "Cross-functional work", "Respect for deadlines and constraints"] },
+                    { title: "MARKETING & ANALYSIS", items: ["Market studies", "Competitive benchmarking", "Target analysis", "Analysis of existing journeys", "Identification of friction points", "Monitoring and understanding of business stakes"] },
+                    { title: "COMMUNICATION & COMMUNITY MANAGEMENT", items: ["Community animation", "Visual content and promotional video creation", "Interviews", "Editorial planning", "Planning and scheduling via Meta", "Communication around projects and events"] },
+                    { title: "VIDEO PRODUCTION & AUDIOVISUAL", items: ["Promotional video editing", "Short formats for social media", "Event promotion", "Visual storytelling", "Content adaptation for platforms"] },
+                    { title: "COMMERCIAL & CLIENT RELATIONS", items: ["Client welcome and support", "Needs analysis", "Offer presentation and sales", "Sales argumentation", "Follow-up and loyalty", "Management of objections and sensitive situations"] },
+                    { title: "EVENTS & COORDINATION", items: ["Event organization and coordination", "Schedule and priority management", "Reception and care of audiences (including VIPs)", "Team and speaker coordination", "Event communication", "Management of unforeseen events and timing"] },
+                    { title: "HUMAN RESOURCES & COORDINATION", items: ["Team and speaker coordination", "Schedule management", "Internal communication", "Interface between teams, providers, and management", "Operational resource tracking"] },
+                    { title: "ADMINISTRATIVE & OPERATIONAL MANAGEMENT", items: ["Administrative management and file tracking", "Invoicing and payment tracking", "Document organization and archiving", "Information structuring", "Respect for procedures"] }
+                ],
+                education: [
+                    { year: "2025 (In progress)", degree: "Digital Master's Prep", school: "Digital Campus", icon: "graduation-cap" },
+                    { year: "In progress", degree: "Google UX Design Certificate", school: "Google Career Certificates", icon: "award" },
+                    { year: "In progress", degree: "UX Research Specialization", school: "University of Michigan", icon: "search" },
+                    { year: "2022-2023", degree: "Bachelor in Sport Management", school: "Sport Management School", icon: "trophy" },
+                    { year: "2020-2022", degree: "HND in Managerial Support (BTS SAM)", school: "Lycée Marie Curie", icon: "file-text" },
+                    { year: "2021", degree: "BAFA (Youth Leader Certificate)", school: "Brevet d'Aptitude aux Fonctions d'Animateur", icon: "users" },
+                    { year: "2018", degree: "High School Diploma (Social & Economics)", school: "Lycée Denis Diderot", icon: "graduation-cap" }
+                ]
+            }
+        };
+
+        // Fonction pour générer le HTML des expériences
+        function renderExperiences(experiences) {
+            const expList = document.getElementById('experience-list');
+            if(!expList) return;
+            expList.innerHTML = '';
+            
+            experiences.forEach((exp, index) => {
+                // Définition des couleurs dynamiques
+                let colorClass = "";
+                let badgeClass = "";
+                let borderClass = "";
+
+                if (exp.color === "purple") { // STAGE
+                    colorClass = "text-purple-400";
+                    badgeClass = "text-purple-300 bg-purple-900/20 border-purple-500/20";
+                    borderClass = "group-hover:border-purple-500/30 group-hover:bg-purple-900/10";
+                } else if (exp.color === "orange") { // ALTERNANCE
+                    colorClass = "text-orange-400";
+                    badgeClass = "text-orange-300 bg-orange-900/20 border-orange-500/20";
+                    borderClass = "group-hover:border-orange-500/30 group-hover:bg-orange-900/10";
+                } else if (exp.color === "blue") { // CDD / MISSION
+                    colorClass = "text-blue-400";
+                    badgeClass = "text-blue-300 bg-blue-900/20 border-blue-500/20";
+                    borderClass = "group-hover:border-blue-500/30 group-hover:bg-blue-900/10";
+                } else if (exp.color === "emerald") { // JOB ÉTUDIANT
+                    colorClass = "text-emerald-400";
+                    badgeClass = "text-emerald-300 bg-emerald-900/20 border-emerald-500/20";
+                    borderClass = "group-hover:border-emerald-500/30 group-hover:bg-emerald-900/10";
+                } else if (exp.color === "yellow") { // PROJET
+                    colorClass = "text-yellow-400";
+                    badgeClass = "text-yellow-300 bg-yellow-900/20 border-yellow-500/20";
+                    borderClass = "group-hover:border-yellow-500/30 group-hover:bg-yellow-900/10";
+                } else { // DÉFAUT
+                    colorClass = "text-neutral-400";
+                    badgeClass = "text-neutral-300 bg-neutral-800 border-neutral-700";
+                    borderClass = "group-hover:border-neutral-500/30";
+                }
+
+
+                const html = `
+                    <div class="relative flex gap-6 group">
+                        <div class="hidden md:flex absolute -left-[2.1rem] top-6 items-center justify-center">
+                            <div class="w-4 h-4 rounded-full bg-neutral-800 border-2 border-neutral-700 group-hover:bg-white group-hover:border-white transition-colors z-10"></div>
+                        </div>
+                        <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-xl flex-1 transition-all ${borderClass}">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-3 gap-2">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center ${colorClass} group-hover:scale-110 transition-all">
+                                        <i data-lucide="${exp.icon}" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-bold text-sm md:text-base leading-tight">${exp.role}</h4>
+                                        <p class="${colorClass} text-xs font-medium">${exp.company}</p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-2 md:flex-col md:items-end md:gap-1">
+                                    <span class="text-[10px] font-mono font-bold text-white bg-neutral-700/50 px-2 py-0.5 rounded border border-neutral-700">${exp.year}</span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${badgeClass}">${exp.contract}</span>
+                                </div>
+                            </div>
+                            <p class="text-neutral-400 text-xs md:text-sm leading-relaxed">${exp.desc}</p>
+                        </div>
+                    </div>
+                `;
+                expList.insertAdjacentHTML('beforeend', html);
+            });
+            lucide.createIcons();
+        }
+
+        // Fonction pour générer le HTML des compétences
+        function renderSkills(skills) {
+            const skillsContainer = document.getElementById('skills-container');
+            if(!skillsContainer) return;
+            skillsContainer.innerHTML = '';
+
+            skills.forEach((skill, index) => {
+                const number = (index + 1).toString().padStart(2, '0');
+                const html = `
+                    <div class="bg-neutral-900 rounded-xl border border-neutral-800 overflow-hidden accordion-border transition-all duration-300 hover:border-neutral-700">
+                        <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between p-5 text-left group cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm font-mono font-bold tracking-wider text-neutral-600 group-hover:text-neutral-500 accordion-number transition-colors">${number}</span>
+                                <span class="font-bold text-base md:text-lg text-neutral-300 group-hover:text-white accordion-title transition-colors">${skill.title}</span>
+                            </div>
+                            <div class="p-2 rounded-full bg-neutral-800 text-neutral-400 group-hover:bg-neutral-700 transition-all duration-300 chevron-container">
+                                <i data-lucide="chevron-down" class="w-4 h-4 chevron"></i>
+                            </div>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-inner">
+                                <div class="px-5 pb-6 pt-0 ml-0 md:ml-10 border-l border-neutral-800 md:border-l-0">
+                                    <ul class="space-y-3">
+                                        ${skill.items.map(item => `
+                                            <li class="flex items-start gap-3 text-neutral-400 text-sm leading-relaxed group/item hover:text-neutral-300 transition-colors">
+                                                <span class="mt-2 w-1.5 h-1.5 rounded-full bg-orange-500/40 group-hover/item:bg-orange-500 flex-shrink-0 transition-colors"></span>
+                                                <span>${item}</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                skillsContainer.insertAdjacentHTML('beforeend', html);
+            });
+            lucide.createIcons();
+        }
+
+        // Fonction pour générer le HTML des formations
+        function renderEducation(education) {
+            const marqueeContainer = document.getElementById('education-marquee');
+            if(!marqueeContainer) return;
+            marqueeContainer.innerHTML = '';
+            
+            // On double les données pour le marquee infini
+            const marqueeData = [...education, ...education];
+            
+            marqueeData.forEach(edu => {
+                const html = `
+                    <div class="w-[300px] bg-neutral-900 p-6 rounded-xl border border-neutral-800 flex flex-col gap-4 hover:border-orange-500/50 transition-colors group cursor-default flex-shrink-0">
+                        <div class="flex justify-between items-start">
+                            <div class="p-3 bg-neutral-800 rounded-lg text-orange-500 group-hover:bg-orange-900/20 group-hover:scale-110 transition-all">
+                                <i data-lucide="${edu.icon}" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-mono font-medium text-orange-400/80 bg-orange-900/10 px-2 py-1 rounded">
+                                ${edu.year}
+                            </span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg leading-tight mb-1">${edu.degree}</h4>
+                            <p class="text-neutral-400 text-sm">${edu.school}</p>
+                        </div>
+                    </div>
+                `;
+                marqueeContainer.insertAdjacentHTML('beforeend', html);
+            });
+            lucide.createIcons();
+            
+            // Réinitialiser l'observer pour le nouveau contenu
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+            }, { threshold: 0.1 });
+            const marqueeElement = document.getElementById('education-marquee');
+            if (marqueeElement) observer.observe(marqueeElement);
+        }
+
+        function selectLanguage(lang) {
+            // Appliquer les traductions statiques
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    // Utiliser innerHTML pour permettre le HTML dans le texte (gras, couleurs)
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Appliquer les traductions dynamiques (Listes)
+            renderExperiences(translations[lang].experiences);
+            renderSkills(translations[lang].skills);
+            renderEducation(translations[lang].education);
+
+            // Fermer le splash screen
+            const splashScreen = document.getElementById('splash-screen');
+            splashScreen.classList.add('hidden-splash');
+            
+            // Lancer le slideshow des outils après la disparition du splash
+            setTimeout(() => {
+                document.body.style.overflow = ''; // REMET LE SCROLL ICI
+                document.body.classList.remove('overflow-hidden'); // Sécurité supplémentaire
+                splashScreen.style.display = 'none'; // Retirer complètement du flux
+                startSlideshow(); // Démarrer le diaporama des outils
+            }, 800);
+        }
+
 
         // Toggle Experience
         function toggleExperience() {
@@ -746,6 +1441,15 @@
         function openAideActionModal() { document.getElementById('aide-action-modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
         function closeAideActionModal() { document.getElementById('aide-action-modal').classList.remove('open'); document.body.style.overflow = ''; }
         document.getElementById('aide-action-modal').addEventListener('click', function(e) { if (e.target === this) closeAideActionModal(); });
+
+        // NOUVELLES FONCTIONS : APP VOYAGE & SNCF CONNECT (CORRECTION)
+        function openAppVoyageModal() { document.getElementById('app-voyage-modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeAppVoyageModal() { document.getElementById('app-voyage-modal').classList.remove('open'); document.body.style.overflow = ''; }
+        document.getElementById('app-voyage-modal').addEventListener('click', function(e) { if (e.target === this) closeAppVoyageModal(); });
+
+        function openSncfModal() { document.getElementById('sncf-modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeSncfModal() { document.getElementById('sncf-modal').classList.remove('open'); document.body.style.overflow = ''; }
+        document.getElementById('sncf-modal').addEventListener('click', function(e) { if (e.target === this) closeSncfModal(); });
 
         // Toggle Accordion
         function toggleAccordion(button) {
@@ -786,110 +1490,14 @@
             const expBtn = document.getElementById('exp-toggle-btn');
             if(expBtn) { expBtn.addEventListener('click', toggleExperience); }
 
-            const EXPERIENCES = [
-                { role: "Coordinatrice Transport VIP", company: "On Location", year: "2024", contract: "Mission / CDD", icon: "car", desc: "Coordination opérationnelle et communication 100% en anglais. Gestion des imprévus en temps réel pour une clientèle VIP." },
-                { role: "Community Manager & Commerciale", company: "L'Orange Bleue", year: "2023", contract: "Alternance", icon: "instagram", desc: "Création de contenus réseaux sociaux, mise en avant de l'activité et gestion de la relation adhérents." },
-                { role: "Agent Services Généraux", company: "SYNERGIE", year: "2022", contract: "CDD / Intérim", icon: "settings", desc: "Support logistique, coordination des fournisseurs et gestion des besoins des agences." },
-                { role: "Marketing & Stratégie", company: "Ekin Sport", year: "2022", contract: "Projet Académique", icon: "target", desc: "Analyse d'un cas client complet et élaboration de recommandations stratégiques." },
-                { role: "Chargée de Com & Évènementiel", company: "MDA", year: "2022", contract: "Stage", icon: "party-popper", desc: "Organisation du Week-end camping Evasion (1500 participants). Logistique et communication." },
-                { role: "Assistante Administrative", company: "Crédit Mutuel Leasing", year: "2021", contract: "Alternance", icon: "file-text", desc: "Gestion des tickets informatiques internes, suivi des mobilités et mouvements collaborateurs." },
-                { role: "Chargée de Recrutement", company: "City One", year: "2021", contract: "CDD", icon: "users", desc: "Sourcing, entretiens, sélection des profils et suivi des équipes terrain." },
-                { role: "Assistante RH", company: "Leroy Merlin", year: "2020", contract: "Stage", icon: "user-plus", desc: "Création de supports d'intégration (onboarding) pour les nouveaux collaborateurs." },
-                { role: "Animatrice", company: "Junior & Cie (SNCF)", year: "2019-2022", contract: "Job Étudiant", icon: "train", desc: "Accompagnement et animation pour enfants lors de trajets longue distance." }
-            ];
+            // Empêcher le scroll au démarrage
+            document.body.style.overflow = 'hidden';
 
-            const expList = document.getElementById('experience-list');
-            if(expList) {
-                EXPERIENCES.forEach((exp, index) => {
-                    const html = `
-                        <div class="relative flex gap-6 group">
-                            <div class="hidden md:flex absolute -left-[2.1rem] top-6 items-center justify-center"><div class="w-4 h-4 rounded-full bg-neutral-800 border-2 border-neutral-700 group-hover:bg-orange-500 group-hover:border-orange-500 transition-colors z-10"></div></div>
-                            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-xl flex-1 hover:border-orange-500/30 transition-all">
-                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-3 gap-2">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-neutral-800 rounded-lg flex items-center justify-center text-neutral-400 group-hover:text-orange-500 transition-all"><i data-lucide="${exp.icon}" class="w-4 h-4"></i></div>
-                                        <div><h4 class="text-white font-bold text-sm md:text-base leading-tight">${exp.role}</h4><p class="text-orange-400 text-xs font-medium">${exp.company}</p></div>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 md:flex-col md:items-end md:gap-1">
-                                        <span class="text-[10px] font-mono font-bold text-white bg-neutral-700/50 px-2 py-0.5 rounded border border-neutral-700">${exp.year}</span>
-                                        <span class="text-[10px] font-bold text-orange-300 bg-orange-900/20 px-2 py-0.5 rounded border border-orange-500/20">${exp.contract}</span>
-                                    </div>
-                                </div>
-                                <p class="text-neutral-400 text-xs md:text-sm leading-relaxed">${exp.desc}</p>
-                            </div>
-                        </div>
-                    `;
-                    expList.insertAdjacentHTML('beforeend', html);
-                });
-            }
-
-            const SKILLS_DATA = [
-                { title: "UX DESIGN (en formation)", items: ["Recherche utilisateur (observations, analyse des besoins)", "Personas et cartes d’empathie", "Parcours utilisateurs (user journey)", "Architecture de l’information", "Wireframes et prototypage (Figma)", "Tests utilisateurs et itérations", "Formation UX/UI – certification Google UX Design (en cours)"] },
-                { title: "DESIGN VISUEL & OUTILS GRAPHIQUES", items: ["Bases en Photoshop, Illustrator et InDesign", "Mise en page et grilles", "Hiérarchie visuelle", "Typographie et couleurs", "Création de supports digitaux et print"] },
-                { title: "GESTION DE PROJET", items: ["Coordination et planification", "Organisation des priorités", "Suivi des actions et livrables", "Travail en transversalité", "Respect des délais et contraintes"] },
-                { title: "MARKETING & ANALYSE", items: ["Études de marché", "Benchmark concurrentiel", "Analyse des cibles", "Analyse de parcours existants", "Identification des points de friction", "Veille et compréhension des enjeux business"] },
-                { title: "COMMUNICATION & COMMUNITY MANAGEMENT", items: ["Animation de communauté", "Création de contenus visuels et vidéos promotionnelles", "Réalisation d’interviews", "Élaboration de plannings éditoriaux", "Planification et programmation via Meta", "Communication autour de projets et événements"] },
-                { title: "PRODUCTION VIDÉO & AUDIOVISUEL", items: ["Montage de vidéos promotionnelles", "Formats courts pour réseaux sociaux", "Valorisation d’événements", "Storytelling visuel", "Adaptation des contenus aux plateformes"] },
-                { title: "COMMERCIAL & RELATION CLIENT", items: ["Accueil et accompagnement client", "Analyse des besoins", "Présentation et vente d’offres", "Argumentation commerciale", "Suivi et fidélisation", "Gestion des objections et situations sensibles"] },
-                { title: "ÉVÈNEMENTIEL & COORDINATION", items: ["Organisation et coordination d’événements", "Gestion des plannings et des priorités", "Accueil et prise en charge de publics (dont VIP)", "Coordination d’équipes et d’intervenants", "Communication événementielle", "Gestion des imprévus et respect des timings"] },
-                { title: "RESSOURCES HUMAINES & COORDINATION", items: ["Coordination d’équipes et d’intervenants", "Gestion des plannings", "Communication interne", "Interface entre équipes, prestataires et direction", "Suivi opérationnel des ressources"] },
-                { title: "ADMINISTRATIF & GESTION OPÉRATIONNELLE", items: ["Gestion administrative et suivi de dossiers", "Facturation et suivi des paiements", "Organisation et archivage de documents", "Structuration de l’information", "Respect des procédures"] }
-            ];
-
-            const skillsContainer = document.getElementById('skills-container');
-            if(skillsContainer) {
-                SKILLS_DATA.forEach((skill, index) => {
-                    const number = (index + 1).toString().padStart(2, '0');
-                    const html = `
-                        <div class="bg-neutral-900 rounded-xl border border-neutral-800 overflow-hidden accordion-border transition-all duration-300 hover:border-neutral-700">
-                            <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between p-5 text-left group cursor-pointer">
-                                <div class="flex items-center gap-4">
-                                    <span class="text-sm font-mono font-bold tracking-wider text-neutral-600 group-hover:text-neutral-500 accordion-number transition-colors">${number}</span>
-                                    <span class="font-bold text-base md:text-lg text-neutral-300 group-hover:text-white accordion-title transition-colors">${skill.title}</span>
-                                </div>
-                                <div class="p-2 rounded-full bg-neutral-800 text-neutral-400 group-hover:bg-neutral-700 transition-all duration-300 chevron-container"><i data-lucide="chevron-down" class="w-4 h-4 chevron"></i></div>
-                            </button>
-                            <div class="accordion-content"><div class="accordion-inner"><div class="px-5 pb-6 pt-0 ml-0 md:ml-10 border-l border-neutral-800 md:border-l-0"><ul class="space-y-3">
-                                ${skill.items.map(item => `<li class="flex items-start gap-3 text-neutral-400 text-sm leading-relaxed group/item hover:text-neutral-300 transition-colors"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-orange-500/40 group-hover/item:bg-orange-500 flex-shrink-0 transition-colors"></span><span>${item}</span></li>`).join('')}
-                            </ul></div></div></div>
-                        </div>
-                    `;
-                    skillsContainer.insertAdjacentHTML('beforeend', html);
-                });
-            }
-
-            const EDUCATION_DATA = [
-                { year: "2025 (En cours)", degree: "Prépa Mastère Digital", school: "Digital Campus", icon: "graduation-cap" },
-                { year: "En cours", degree: "Certificat Google UX Design", school: "Google Career Certificates", icon: "award" },
-                { year: "En cours", degree: "Spécialisation UX Research", school: "University of Michigan", icon: "search" },
-                { year: "2022-2023", degree: "Bachelor Management du Sport", school: "Sport Management School", icon: "trophy" },
-                { year: "2020-2022", degree: "BTS Support à l'Action Manageriale", school: "Lycée Marie Curie", icon: "file-text" },
-                { year: "2021", degree: "BAFA", school: "Brevet d'Aptitude aux Fonctions d'Animateur", icon: "users" },
-                { year: "2018", degree: "Baccalauréat ES", school: "Lycée Denis Diderot", icon: "graduation-cap" }
-            ];
-
-            const marqueeContainer = document.getElementById('education-marquee');
-            if(marqueeContainer) {
-                const marqueeData = [...EDUCATION_DATA, ...EDUCATION_DATA];
-                marqueeData.forEach(edu => {
-                    const html = `
-                        <div class="w-[300px] bg-neutral-900 p-6 rounded-xl border border-neutral-800 flex flex-col gap-4 hover:border-orange-500/50 transition-colors group cursor-default flex-shrink-0">
-                            <div class="flex justify-between items-start">
-                                <div class="p-3 bg-neutral-800 rounded-lg text-orange-500 group-hover:bg-orange-900/20 group-hover:scale-110 transition-all"><i data-lucide="${edu.icon}" class="w-6 h-6"></i></div>
-                                <span class="text-xs font-mono font-medium text-orange-400/80 bg-orange-900/10 px-2 py-1 rounded">${edu.year}</span>
-                            </div>
-                            <div><h4 class="font-bold text-white text-lg leading-tight mb-1">${edu.degree}</h4><p class="text-neutral-400 text-sm">${edu.school}</p></div>
-                        </div>
-                    `;
-                    marqueeContainer.insertAdjacentHTML('beforeend', html);
-                });
-            }
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
-            }, { threshold: 0.1 });
-            const marqueeElement = document.getElementById('education-marquee');
-            if (marqueeElement) observer.observe(marqueeElement);
+            // Initialiser en français par défaut pour le rendu initial (caché sous le splash)
+            // Mais l'utilisateur choisira via les boutons
+            renderExperiences(translations['fr'].experiences);
+            renderSkills(translations['fr'].skills);
+            renderEducation(translations['fr'].education);
 
             lucide.createIcons();
         });
