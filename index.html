@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="fr" style="scroll-padding-top: 6rem;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hachmia DJAE - Portfolio UX/UI</title>
+    <meta name="description" content="Portfolio de Hachmia DJAE, UX/UI Designer à la recherche d'un stage.">
+    
+    <!-- Tailwind CSS pour le style -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Librairie d'icônes Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styles Personnalisés -->
+    <style>
+        /* Effet de lueur de base */
+        .text-glow {
+            text-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+        }
+
+        /* Animation : Reflet brillant sur Designer */
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        
+        .animate-designer {
+            background: linear-gradient(to right, #f97316 20%, #ffedd5 50%, #f97316 80%);
+            background-size: 200% auto;
+            color: #f97316;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 4s linear infinite;
+            text-shadow: 0 0 30px rgba(249, 115, 22, 0.4);
+        }
+
+        /* Animation Marquee (Droite vers Gauche) */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-scroll {
+            animation: scroll 40s linear infinite;
+            animation-play-state: paused;
+        }
+        .animate-scroll.is-visible {
+            animation-play-state: running;
+        }
+        .animate-scroll:hover {
+            animation-play-state: paused !important;
+        }
+
+        /* Masque dégradé */
+        .mask-gradient-sides {
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        /* --- CORRECTION ACCORDÉON --- */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-content.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-inner {
+            overflow: hidden;
+            min-height: 0;
+        }
+        
+        /* Rotation Chevron */
+        .chevron { transition: transform 0.3s; }
+        .chevron.rotate { transform: rotate(180deg); }
+        
+        /* Styles Actifs */
+        .accordion-title.active { color: #f97316; }
+        .accordion-border.active {
+            border-color: rgba(249, 115, 22, 0.5);
+            box-shadow: 0 10px 15px -3px rgba(124, 45, 18, 0.1);
+        }
+
+        /* Menu Mobile */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        /* Animation Cards */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-card {
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+
+        /* --- STYLES MODAL (Pop-up) --- */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            z-index: 100;
+        }
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+    </style>
+
+    <!-- NOTE HUBSPOT : Décommentez la ligne suivante si hébergé sur HubSpot -->
+    <!-- {{ standard_header_includes }} -->
+</head>
+<body class="bg-neutral-950 font-sans text-neutral-100 flex flex-col items-center min-h-screen">
+
+    <!-- HEADER NAVIGATION -->
+    <header class="w-full fixed top-0 left-0 z-50 bg-neutral-950/80 backdrop-blur-md border-b border-neutral-800">
+        <div class="max-w-6xl mx-auto px-4 md:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- LOGO -->
+                <a href="/" class="text-xl font-bold text-white tracking-tight flex items-center gap-3 group">
+                    <img src="logo.png" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" alt="Logo Hachmia DJAE" class="h-10 w-auto object-contain group-hover:opacity-80 transition-opacity">
+                    <span class="hidden w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold group-hover:bg-orange-500 transition-colors">H</span>
+                    <span>Hachmia DJAE</span>
+                </a>
+
+                <!-- Navigation Desktop -->
+                <nav class="hidden md:flex items-center gap-6 text-sm lg:text-base lg:gap-8">
+                    <a href="/" class="text-white font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Accueil</a>
+                    <a href="#projets-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Projets</a>
+                    <a href="#experience-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Parcours</a>
+                    <a href="#competences-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Compétences</a>
+                    <a href="#formations-section" class="text-neutral-400 font-medium hover:text-orange-500 transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-orange-500 after:transition-all hover:after:w-full">Formations</a>
+                    
+                    <a href="mailto:hachmiadjae@gmail.com" class="px-5 py-2.5 bg-neutral-100 text-neutral-900 rounded-lg font-bold hover:bg-orange-500 hover:text-white transition-all">
+                        Contact
+                    </a>
+                </nav>
+
+                <!-- Bouton Menu Mobile -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-neutral-400 hover:text-white transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Mobile -->
+            <div id="mobile-menu" class="md:hidden border-t border-neutral-800">
+                <nav class="flex flex-col py-4 gap-4">
+                    <a href="/" class="text-white px-4 hover:text-orange-500 transition-colors">Accueil</a>
+                    <a href="#projets-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Projets</a>
+                    <a href="#experience-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Parcours Pro</a>
+                    <a href="#competences-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Compétences</a>
+                    <a href="#formations-section" class="text-neutral-400 px-4 hover:text-orange-500 transition-colors">Formations</a>
+                    <a href="mailto:hachmiadjae@gmail.com" class="text-orange-500 font-bold px-4">Me contacter</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="h-32 md:h-40 w-full"></div>
+
+    <!-- SECTION 1 : HERO -->
+    <div class="max-w-6xl w-full bg-neutral-900 shadow-2xl rounded-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px] border border-neutral-800 mb-16 relative mx-4">
+        <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center order-2 md:order-1">
+            <div class="inline-flex items-center gap-2 self-start bg-green-900/30 text-green-400 px-3 py-1 rounded-full text-sm font-semibold mb-6 border border-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                À la recherche d'un stage (4-6 mois) • Dès Mars
+            </div>
+
+            <h2 class="text-xl md:text-2xl font-semibold text-neutral-300 mb-2">Hachmia DJAE</h2>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white tracking-tight">
+                UX / UI <span class="animate-designer">Designer</span>
+            </h1>
+            
+            <div class="text-neutral-400 mb-8 leading-relaxed max-w-lg space-y-4 text-sm md:text-base">
+                <p>
+                    Issue d’un parcours orienté coordination, gestion de projet, marketing et communication, j’ai évolué dans des environnements concrets où l’organisation et la clarté sont essentielles. C’est en observant les usages réels, les frictions et les besoins du terrain que je me suis naturellement tournée vers le design UX/UI.
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="#projets-section" class="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:-translate-y-1 shadow-lg shadow-orange-900/40 text-center no-underline">
+                    Voir mes projets <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+                
+                <a href="CV-Hachmia DJAE.pdf" download="CV-Hachmia DJAE.pdf" class="flex items-center justify-center gap-2 bg-transparent border border-neutral-700 hover:border-orange-500 text-neutral-300 hover:text-orange-500 px-6 py-3 rounded-lg font-medium transition-all cursor-pointer text-center no-underline">
+                    <i data-lucide="download" class="w-4 h-4"></i> Télécharger mon CV
+                </a>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-neutral-800 flex flex-wrap gap-6 text-neutral-500">
+                <div class="flex flex-col items-center gap-1 hover:text-orange-500 transition-colors" title="Recherche Utilisateur">
+                    <i data-lucide="search" class="w-5 h-5"></i><span class="text-xs font-medium">UX Research</span>
+                </div>
+                <div class="flex flex-col items-center gap-1 hover:text-orange-500 transition-colors" title="UX Design">
+                    <i data-lucide="users" class="w-5 h-5"></i><span class="text-xs font-medium">UX Design</span>
+                </div>
+                <div class="flex flex-col items-center gap-1 hover:text-orange-500 transition-colors" title="UI Design">
+                    <i data-lucide="layout" class="w-5 h-5"></i><span class="text-xs font-medium">UI Design</span>
+                </div>
+                <div class="flex flex-col items-center gap-1 hover:text-orange-500 transition-colors" title="Branding">
+                    <i data-lucide="palette" class="w-5 h-5"></i><span class="text-xs font-medium">Identité Visuelle</span>
+                </div>
+                <div class="flex flex-col items-center gap-1 hover:text-orange-500 transition-colors" title="Prototypage">
+                    <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i><span class="text-xs font-medium">Prototypage</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/2 bg-neutral-800 relative min-h-[300px] md:min-h-full order-1 md:order-2 group overflow-hidden">
+            <!-- PHOTO -->
+            <img src="photo.jpg" onerror="this.src='https://placehold.co/800x1000/222/999?text=Photo+Profil';" alt="Hachmia DJAE" class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-neutral-900/30 opacity-60 mix-blend-multiply pointer-events-none"></div>
+        </div>
+    </div>
+
+    <!-- SECTION 2 : DASHBOARD -->
+    <div class="max-w-4xl w-full mb-20 px-4">
+        <div class="flex items-center justify-center gap-3 mb-6">
+            <h3 class="text-lg text-neutral-500 font-semibold uppercase tracking-widest text-xs">Vue d'ensemble</h3>
+        </div>
+        <div class="bg-neutral-800 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl grid grid-cols-2 md:grid-cols-5 gap-[1px]">
+            <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-100">
+                <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="briefcase" class="w-5 h-5"></i></div>
+                <span class="text-lg md:text-xl font-bold text-white mb-1">+3 Ans</span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">Expérience Pro</span>
+            </div>
+            <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-200">
+                <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="calendar" class="w-5 h-5"></i></div>
+                <span class="text-lg md:text-xl font-bold text-white mb-1">25 Ans</span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">Paris / Marseille</span>
+            </div>
+            <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-300">
+                <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="globe" class="w-5 h-5"></i></div>
+                <span class="text-lg md:text-xl font-bold text-white mb-1">Quadrilingue</span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">FR / EN / ES / COM</span>
+            </div>
+            <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group animate-card delay-400">
+                <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+                <span class="text-lg md:text-xl font-bold text-white mb-1">Mobile</span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">France / Monde</span>
+            </div>
+            <div class="bg-neutral-900 p-4 md:p-6 flex flex-col items-center justify-center text-center hover:bg-neutral-800/50 transition-colors group col-span-2 md:col-span-1 animate-card delay-500">
+                <div class="mb-3 text-orange-500 p-2 bg-orange-500/5 rounded-full group-hover:scale-110 transition-transform"><i data-lucide="activity" class="w-5 h-5"></i></div>
+                <span class="text-lg md:text-xl font-bold text-white mb-1">Loisirs</span>
+                <span class="text-[10px] md:text-xs text-neutral-500 uppercase font-medium">Tennis / Danse</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3 : ATOUTS -->
+    <div class="max-w-6xl w-full mb-16 px-4">
+        <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
+            <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
+            Mes atouts clés
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/30 transition-all group">
+                <div class="w-12 h-12 bg-neutral-800 rounded-lg flex items-center justify-center mb-6 text-orange-500 group-hover:bg-orange-900/20"><i data-lucide="kanban" class="w-6 h-6"></i></div>
+                <h4 class="text-xl font-bold text-white mb-3">Gestion & Rigueur</h4>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-4">Mon background en marketing et coordination de projets me permet de structurer mes projets design avec réalisme. Je sais respecter des délais et gérer les priorités.</p>
+            </div>
+            <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/30 transition-all group">
+                <div class="w-12 h-12 bg-neutral-800 rounded-lg flex items-center justify-center mb-6 text-orange-500 group-hover:bg-orange-900/20"><i data-lucide="mouse-pointer-2" class="w-6 h-6"></i></div>
+                <h4 class="text-xl font-bold text-white mb-3">Outils & Technique</h4>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-4">Je suis à l'aise avec l'organisation de projets sur Notion et Trello (usages personnels et associatifs). En parallèle, je me forme activement à Figma et FigJam pour concevoir mes premières maquettes.</p>
+            </div>
+            <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/30 transition-all group">
+                <div class="w-12 h-12 bg-neutral-800 rounded-lg flex items-center justify-center mb-6 text-orange-500 group-hover:bg-orange-900/20"><i data-lucide="brain-circuit" class="w-6 h-6"></i></div>
+                <h4 class="text-xl font-bold text-white mb-3">Approche Humaine</h4>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-4">Mes expériences en RH et services généraux m'ont appris la réactivité et l'esprit de synthèse. Quant à l'empathie, c'est ma nature : je cherche à comprendre le fonctionnement humain sans juger.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION PARCOURS PROFESSIONNEL -->
+    <section id="experience-section" class="max-w-6xl w-full mb-16 px-4">
+        <button id="exp-toggle-btn" class="w-full bg-neutral-900 p-6 md:p-8 rounded-2xl border border-neutral-800 hover:border-orange-500/50 transition-all flex items-center justify-between group cursor-pointer text-left focus:outline-none shadow-lg">
+            <div class="flex items-center gap-4 md:gap-6">
+                <div class="p-3 md:p-4 bg-orange-600/10 text-orange-500 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                    <i data-lucide="briefcase" class="w-6 h-6 md:w-8 md:h-8"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl md:text-2xl text-white font-bold mb-1 group-hover:text-orange-500 transition-colors">Parcours Professionnel</h3>
+                    <p class="text-neutral-400 text-xs md:text-sm">Découvrir mes expériences significatives (Cliquez pour dérouler)</p>
+                </div>
+            </div>
+            <div id="exp-chevron-container" class="p-2 rounded-full bg-neutral-800 text-neutral-400 group-hover:bg-neutral-700 group-hover:text-white transition-all duration-300">
+                <i data-lucide="chevron-down" id="exp-chevron" class="w-5 h-5 md:w-6 md:h-6 transition-transform duration-300"></i>
+            </div>
+        </button>
+        <div id="experience-content" class="accordion-content">
+            <div class="accordion-inner">
+                <div class="pt-8 px-2 md:px-4 relative">
+                    <div class="absolute left-6 md:left-8 top-10 bottom-10 w-0.5 bg-neutral-800 hidden md:block"></div>
+                    <div class="grid grid-cols-1 gap-8" id="experience-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4 : MES PROJETS & ENGAGEMENTS -->
+    <div id="projets-section" class="max-w-6xl w-full mb-16 px-4">
+        <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
+            <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
+            Mes Projets & Engagements
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- PROJET 1 : Identité Visuelle -->
+            <div onclick="openPivModal()" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full cursor-pointer">
+                <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-900 to-neutral-900"></div>
+                    <i data-lucide="pen-tool" class="w-12 h-12 text-purple-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                </div>
+                <div class="p-6">
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Identité Visuelle</h4>
+                    <p class="text-neutral-400 text-sm mb-4">Création de marque & charte graphique.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le détail <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                </div>
+            </div>
+            
+            <!-- Projet 2 : App de veille de voyage -->
+            <a href="app-voyage.pdf" target="_blank" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full">
+                <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 to-neutral-900"></div>
+                    <i data-lucide="smartphone" class="w-12 h-12 text-indigo-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                </div>
+                <div class="p-6">
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">App de veille de voyage</h4>
+                    <p class="text-neutral-400 text-sm mb-4">Application de veille et d'organisation pour voyageurs.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le PDF <i data-lucide="download" class="w-3 h-3"></i></span>
+                </div>
+            </a>
+
+            <!-- Projet 3 : UX SNCF -->
+            <a href="ux-sncf.pdf" target="_blank" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full">
+                <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-900 to-neutral-900"></div>
+                    <i data-lucide="train" class="w-12 h-12 text-blue-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                </div>
+                <div class="p-6">
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">UX SNCF</h4>
+                    <p class="text-neutral-400 text-sm mb-4">Optimisation de l'expérience utilisateur Junior & Cie.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le projet <i data-lucide="eye" class="w-3 h-3"></i></span>
+                </div>
+            </a>
+
+            <!-- Projet 4 : Cas Ekin Sport (MODIFIÉ POUR MODALE) -->
+            <div onclick="openEkinModal()" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full cursor-pointer">
+                <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-900 to-neutral-900"></div>
+                    <i data-lucide="target" class="w-12 h-12 text-emerald-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                </div>
+                <div class="p-6">
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Cas Market Ekin Sport</h4>
+                    <p class="text-neutral-400 text-sm mb-4">Analyse stratégique marketing et recommandations.</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le cas <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                </div>
+            </div>
+
+            <!-- Projet 5 : Projet MDA (Modale) -->
+            <div onclick="openMDAModal()" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full cursor-pointer">
+                <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-900 to-neutral-900"></div>
+                    <i data-lucide="party-popper" class="w-12 h-12 text-amber-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                </div>
+                <div class="p-6">
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Projet MDA</h4>
+                    <p class="text-neutral-400 text-sm mb-4">Coordination événementielle (Camping Évasion).</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le détail <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                </div>
+            </div>
+
+            <!-- PROJET 6 : Aide et Action (BTS SAM) - MODALE -->
+            <div onclick="openAideActionModal()" class="group bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden hover:border-orange-500/50 transition-all hover:-translate-y-1 block h-full cursor-pointer">
+                <div class="h-40 bg-neutral-800 relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-900 to-neutral-900"></div>
+                    <i data-lucide="users" class="w-12 h-12 text-cyan-400 relative z-10 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                </div>
+                <div class="p-6">
+                    <h4 class="text-lg font-bold text-white mb-2 group-hover:text-orange-500">Aide et Action</h4>
+                    <p class="text-neutral-400 text-sm mb-4">Projet solidaire & organisationnel (BTS SAM).</p>
+                    <span class="text-xs font-bold text-orange-500 uppercase tracking-widest flex items-center gap-1">Voir le détail <i data-lucide="maximize-2" class="w-3 h-3"></i></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SECTION 5 : COMPÉTENCES DÉTAILLÉES (Avec ID pour ancre) -->
+    <div id="competences-section" class="max-w-6xl w-full mb-16 px-4">
+        <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
+            <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
+            Compétences & Expertises
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="skills-container"></div>
+    </div>
+
+    <!-- SECTION 6 : FORMATIONS (Marquee) (Avec ID pour ancre) -->
+    <div id="formations-section" class="max-w-6xl w-full mb-12 px-4">
+        <h3 class="text-2xl text-white font-bold mb-8 flex items-center gap-3">
+            <span class="w-1 h-8 bg-orange-500 rounded-full"></span>
+            Mes Formations
+        </h3>
+        <div class="relative w-full overflow-hidden mask-gradient-sides">
+            <div class="absolute top-0 left-0 w-16 h-full bg-gradient-to-r from-neutral-950 to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute top-0 right-0 w-16 h-full bg-gradient-to-l from-neutral-950 to-transparent z-10 pointer-events-none"></div>
+            <div class="flex gap-6 w-max animate-scroll" id="education-marquee"></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="w-full bg-neutral-900 border-t border-neutral-800 pt-16 pb-8 mt-20">
+        <div class="max-w-6xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <a href="/" class="text-xl font-bold text-white flex items-center gap-3 mb-4">
+                        <img src="logo.png" alt="Logo Hachmia DJAE" class="h-10 w-auto object-contain">
+                        <span>Hachmia DJAE</span>
+                    </a>
+                    <p class="text-neutral-400 text-sm mb-6">UX/UI Designer engagée dans la création d'expériences numériques intuitives et centrées sur l'humain.</p>
+                    <div class="flex gap-4">
+                        <a href="https://linkedin.com" target="_blank" class="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-orange-500 hover:text-white transition-all"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="mailto:hachmiadjae@gmail.com" class="w-10 h-10 bg-neutral-800 rounded-full flex items-center justify-center text-neutral-400 hover:bg-orange-500 hover:text-white transition-all"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Navigation</h4>
+                    <ul class="space-y-3 text-sm text-neutral-400">
+                        <li><a href="/" class="hover:text-orange-500">Accueil</a></li>
+                        <li><a href="#projets-section" class="hover:text-orange-500">Mes Projets</a></li>
+                        <li><a href="#experience-section" class="hover:text-orange-500">Parcours</a></li>
+                        <li><a href="#competences-section" class="hover:text-orange-500">Compétences</a></li>
+                        <li><a href="#formations-section" class="hover:text-orange-500">Formations</a></li>
+                        <li><a href="CV-Hachmia DJAE.pdf" download="CV-Hachmia DJAE.pdf" class="hover:text-orange-500">Mon CV</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Me Contacter</h4>
+                    <p class="text-neutral-400 text-sm mb-6">À la recherche d'un stage de 6 mois. Disponible dès Mars.</p>
+                    <div class="flex flex-col gap-4 text-sm text-neutral-300">
+                        <a href="mailto:hachmiadjae@gmail.com" class="flex items-center gap-3 hover:text-orange-500 group"><div class="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center group-hover:bg-orange-500/20"><i data-lucide="mail" class="w-4 h-4 text-orange-500"></i></div><span>hachmiadjae@gmail.com</span></a>
+                        <a href="tel:0749065994" class="flex items-center gap-3 hover:text-orange-500 group"><div class="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center group-hover:bg-orange-500/20"><i data-lucide="phone" class="w-4 h-4 text-orange-500"></i></div><span>07 49 06 ** **</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-neutral-800 pt-8 text-center text-neutral-600 text-xs">
+                <p>© 2025 Hachmia DJAE. Conçu avec soin & code.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL MDA (Pop-up) -->
+    <div id="mda-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="modal-content bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl relative shadow-2xl">
+            <div class="sticky top-0 bg-neutral-900/95 backdrop-blur border-b border-neutral-800 p-6 flex justify-between items-start z-10">
+                <div>
+                    <span class="text-xs font-mono text-orange-500 bg-orange-900/10 px-2 py-1 rounded border border-orange-500/20 mb-2 inline-block">Projet de Stage • BTS SAM</span>
+                    <h2 class="text-2xl font-bold text-white leading-tight">Week-end "Danse Évasion"</h2>
+                    <p class="text-neutral-400 text-sm">Organisation événementielle - Juin 2021</p>
+                </div>
+                <button onclick="closeMDAModal()" class="p-2 bg-neutral-800 rounded-full hover:bg-neutral-700 text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-8 text-neutral-300">
+                <div class="bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
+                    <p class="text-sm italic">
+                        "Dans le cadre de mon BTS Support à l'Action Managériale, j'ai piloté l'organisation logistique d'un événement majeur pour l'école <strong class="text-white">Marseille Danse Academy</strong> : un week-end camping rassemblant plus de 500 participants."
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="target" class="w-5 h-5 text-orange-500"></i> Contexte & Objectifs
+                    </h3>
+                    <p class="text-sm mb-4 leading-relaxed">
+                        L'école souhaitait relancer son activité économique et renforcer la cohésion après la période Covid. L'événement s'est tenu au "Camping des Cigales" (Le Muy) sous forme de compétition de danse.
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div><span><strong>Objectif Quantitatif :</strong> Attirer un maximum d'adhérents pour booster les inscriptions futures.</span></li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div><span><strong>Objectif Financier :</strong> Accroître le chiffre d'affaires (Budget géré : 21 000€).</span></li>
+                    </ul>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4 text-indigo-400"></i> Pilotage & Suivi</h4>
+                        <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• Formalisation (Réunions, CR, Note de cadrage)</li>
+                            <li>• Veille informationnelle (Flux RSS Covid-19)</li>
+                            <li>• Gestion des risques (Sanitaires, Délais)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="package" class="w-4 h-4 text-emerald-400"></i> Logistique Terrain</h4>
+                        <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• Attribution des bungalows</li>
+                            <li>• Gestion des stocks (Nourriture, Matériel)</li>
+                            <li>• Commandes fournisseurs (Sécurité, Covid)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-neutral-800 pt-6">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Compétences Clés Mobilisées</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Gestion de Projet</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Coordination</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Logistique</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300">Travail d'équipe</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EKIN SPORT (Pop-up) -->
+    <div id="ekin-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="modal-content bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl relative shadow-2xl">
+            <div class="sticky top-0 bg-neutral-900/95 backdrop-blur border-b border-neutral-800 p-6 flex justify-between items-start z-10">
+                <div>
+                    <span class="text-xs font-mono text-emerald-500 bg-emerald-900/10 px-2 py-1 rounded border border-emerald-500/20 mb-2 inline-block">Cas Marketing • Bachelor Sport</span>
+                    <h2 class="text-2xl font-bold text-white leading-tight">Stratégie EKINSPORT</h2>
+                    <p class="text-neutral-400 text-sm">Développement Marketing & Digital</p>
+                </div>
+                <button onclick="closeEkinModal()" class="p-2 bg-neutral-800 rounded-full hover:bg-neutral-700 text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-8 text-neutral-300">
+                <!-- Intro -->
+                <div class="bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
+                    <p class="text-sm italic">
+                        "Analyse stratégique pour <strong class="text-white">EKINSPORT</strong>, premier revendeur Nike Teamwear en France. L'objectif : maximiser l'engagement des licenciés de clubs et développer les ventes e-commerce."
+                    </p>
+                </div>
+
+                <!-- Diagnostic -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-500"></i> 1. Diagnostic & Enjeux
+                    </h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></div><span><strong>Forces :</strong> Partenariat Nike exclusif, 2500 clubs partenaires, logistique performante.</span></li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></div><span><strong>Problématique :</strong> Manque de visibilité auprès des adhérents finaux (licenciés) et panier moyen à développer.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Plan d'Action -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5 text-emerald-500"></i> 2. Plan d'Action Recommandé
+                    </h3>
+                    
+                    <!-- Carte Action 1 -->
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-1 text-sm">Programme Ambassadeurs</h4>
+                        <p class="text-xs text-neutral-400 mb-2">Recrutement de profils influents au sein des clubs (ex: Ethan, Mya) pour porter la marque.</p>
+                        <div class="flex gap-2 text-[10px] uppercase font-bold text-emerald-400">
+                            <span class="bg-emerald-900/20 px-2 py-1 rounded">Relais Terrain</span>
+                            <span class="bg-emerald-900/20 px-2 py-1 rounded">Création Contenu</span>
+                        </div>
+                    </div>
+
+                    <!-- Carte Action 2 -->
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-1 text-sm">Stratégie Social Media</h4>
+                        <p class="text-xs text-neutral-400 mb-2">Déploiement sur Instagram & TikTok avec un planning éditorial rythmé.</p>
+                        <ul class="text-xs text-neutral-500 list-disc list-inside">
+                            <li>3 posts / semaine (Matchs, Vie du club)</li>
+                            <li>Contenus divertissants & Mise en avant produits</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- KPI -->
+                <div class="flex items-center justify-between bg-neutral-800/30 p-4 rounded-xl border border-neutral-800">
+                    <div>
+                        <span class="text-xs font-bold text-neutral-500 uppercase">Objectif Principal</span>
+                        <p class="text-white font-bold text-sm">Conversion & Notoriété</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-bold text-emerald-500">+25%</span>
+                        <p class="text-xs text-neutral-500">Engagement RS</p>
+                    </div>
+                </div>
+
+                <!-- Bouton PDF -->
+                <div class="pt-4 flex justify-center">
+                    <a href="ekin-sport.pdf" target="_blank" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-lg font-bold transition-all w-full md:w-auto justify-center">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        Voir le dossier complet (PDF)
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIV (Identité Visuelle) -->
+    <div id="piv-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="modal-content bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl relative shadow-2xl">
+            <div class="sticky top-0 bg-neutral-900/95 backdrop-blur border-b border-neutral-800 p-6 flex justify-between items-start z-10">
+                <div>
+                    <span class="text-xs font-mono text-purple-400 bg-purple-900/10 px-2 py-1 rounded border border-purple-500/20 mb-2 inline-block">Design Graphique • Projet Personnel</span>
+                    <h2 class="text-2xl font-bold text-white leading-tight">Identité Visuelle Personnelle</h2>
+                    <p class="text-neutral-400 text-sm">Branding & Design System - 2025</p>
+                </div>
+                <button onclick="closePivModal()" class="p-2 bg-neutral-800 rounded-full hover:bg-neutral-700 text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-8 text-neutral-300">
+                <!-- Intro -->
+                <div class="bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
+                    <p class="text-sm italic">
+                        "Cette identité visuelle se définit comme une expérience UX simple, lisible et modulaire. Elle traduit un parcours pluriel et une approche orientée UX. Les formes arrondies, inspirées des composants UI, évoquent fluidité et accessibilité."
+                    </p>
+                </div>
+
+                <!-- Concept -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="pen-tool" class="w-5 h-5 text-purple-400"></i> Concept & Valeurs
+                    </h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div><span><strong>Monogramme HD :</strong> Conçu comme un élément de design system, flexible et scalable.</span></li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div><span><strong>Approche :</strong> Simple, Lisible, Modulaire. Adaptée aux environnements numériques.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Choix Graphiques -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="palette" class="w-4 h-4 text-purple-400"></i> Palette Couleurs</h4>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-[#71234c] border border-white/10"></div>
+                            <div>
+                                <p class="text-white text-xs font-bold">Prune Profond</p>
+                                <p class="text-neutral-500 text-[10px] font-mono">HEX #71234c</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="type" class="w-4 h-4 text-purple-400"></i> Typographie</h4>
+                        <p class="text-white text-lg font-serif">Bodoni 72 Bold</p>
+                        <p class="text-neutral-500 text-xs">Caractère premium et identitaire.</p>
+                    </div>
+                </div>
+
+                <!-- Déclinaisons -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="layers" class="w-5 h-5 text-purple-400"></i> Déclinaisons Supports
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300 border border-neutral-700">Papeterie</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300 border border-neutral-700">Carte de Visite</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300 border border-neutral-700">Mockups UI</span>
+                        <span class="px-3 py-1 bg-neutral-800 rounded-full text-xs text-neutral-300 border border-neutral-700">Rapport UX</span>
+                    </div>
+                </div>
+
+                <!-- Bouton PDF -->
+                <div class="pt-4 flex justify-center">
+                    <a href="PIV.pdf" target="_blank" class="flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-lg font-bold transition-all w-full md:w-auto justify-center">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        Voir la charte complète (PDF)
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AIDE ET ACTION (Pop-up) -->
+    <div id="aide-action-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="modal-content bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl relative shadow-2xl">
+            <div class="sticky top-0 bg-neutral-900/95 backdrop-blur border-b border-neutral-800 p-6 flex justify-between items-start z-10">
+                <div>
+                    <span class="text-xs font-mono text-cyan-500 bg-cyan-900/10 px-2 py-1 rounded border border-cyan-500/20 mb-2 inline-block">Projet BTS SAM • Humanitaire</span>
+                    <h2 class="text-2xl font-bold text-white leading-tight">Projet Aide et Action</h2>
+                    <p class="text-neutral-400 text-sm">Organisation & Logistique Solidaire</p>
+                </div>
+                <button onclick="closeAideActionModal()" class="p-2 bg-neutral-800 rounded-full hover:bg-neutral-700 text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-8 text-neutral-300">
+                <!-- Intro -->
+                <div class="bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
+                    <p class="text-sm italic">
+                        "Dans le cadre de mon BTS SAM, j'ai participé à la conduite d'un projet solidaire visant à formaliser, suivre et évaluer des actions concrètes."
+                    </p>
+                </div>
+
+                <!-- Compétences Visées -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="target" class="w-5 h-5 text-cyan-500"></i> Compétences Visées
+                    </h3>
+                    <ul class="space-y-2 text-sm list-disc list-inside text-neutral-400">
+                        <li>Formaliser le cadre du projet</li>
+                        <li>Conduire une veille informationnelle</li>
+                        <li>Suivre et contrôler le projet</li>
+                        <li>Évaluer le projet</li>
+                    </ul>
+                </div>
+
+                <!-- Détails du Projet -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4 text-indigo-400"></i> Contexte & Missions</h4>
+                         <p class="text-xs text-neutral-400 mb-2"><strong>Rôle :</strong> Chargée de l'organisation et de la logistique.</p>
+                        <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• Réunions de cadrage et comptes rendus</li>
+                            <li>• Veille informationnelle</li>
+                            <li>• Gestion des risques (Covid-19, délais)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl">
+                        <h4 class="font-bold text-white mb-2 text-sm flex items-center gap-2"><i data-lucide="package" class="w-4 h-4 text-emerald-400"></i> Réalisations Concrètes</h4>
+                        <ul class="space-y-1.5 text-xs text-neutral-400">
+                            <li>• Gestion des stocks (commandes)</li>
+                            <li>• Tableaux de bord de suivi</li>
+                            <li>• Gestion des prestataires (devis)</li>
+                             <li>• Organisation logistique</li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <!-- Risques et Gestion -->
+                <div>
+                     <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-500"></i> Gestion des Risques
+                    </h3>
+                    <ul class="space-y-2 text-sm text-neutral-400">
+                         <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div><span>Risques sanitaires (Covid-19) : anticipation des restrictions.</span></li>
+                         <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></div><span>Délais serrés et retards fournisseurs : suivi rigoureux.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- FONCTION TOGGLE PARCOURS PRO (Définie en haut pour éviter les erreurs) ---
+        function toggleExperience() {
+            const content = document.getElementById('experience-content');
+            const chevron = document.getElementById('exp-chevron');
+            const chevronContainer = document.getElementById('exp-chevron-container');
+            const isOpen = content.classList.contains('open');
+
+            if (isOpen) {
+                content.classList.remove('open');
+                chevron.classList.remove('rotate');
+                chevronContainer.classList.remove('bg-orange-500', 'text-white');
+                chevronContainer.classList.add('bg-neutral-800', 'text-neutral-400');
+            } else {
+                content.classList.add('open');
+                chevron.classList.add('rotate');
+                chevronContainer.classList.remove('bg-neutral-800', 'text-neutral-400');
+                chevronContainer.classList.add('bg-orange-500', 'text-white');
+            }
+        }
+
+        // --- GESTION MODALE MDA ---
+        function openMDAModal() {
+            document.getElementById('mda-modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMDAModal() {
+            document.getElementById('mda-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('mda-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeMDAModal();
+        });
+
+        // --- GESTION MODALE EKIN SPORT ---
+        function openEkinModal() {
+            document.getElementById('ekin-modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeEkinModal() {
+            document.getElementById('ekin-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('ekin-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeEkinModal();
+        });
+
+        // --- GESTION MODALE PIV (Identité Visuelle) ---
+        function openPivModal() {
+            document.getElementById('piv-modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closePivModal() {
+            document.getElementById('piv-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('piv-modal').addEventListener('click', function(e) {
+            if (e.target === this) closePivModal();
+        });
+
+        // --- GESTION MODALE AIDE ET ACTION ---
+        function openAideActionModal() {
+            document.getElementById('aide-action-modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeAideActionModal() {
+            document.getElementById('aide-action-modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('aide-action-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeAideActionModal();
+        });
+
+        // --- FONCTION TOGGLE COMPÉTENCES ---
+        function toggleAccordion(button) {
+            const parent = button.parentElement;
+            const content = parent.querySelector('.accordion-content');
+            const chevron = parent.querySelector('.chevron');
+            const chevronContainer = parent.querySelector('.chevron-container');
+            const title = parent.querySelector('.accordion-title');
+            const number = parent.querySelector('.accordion-number');
+            const isOpen = content.classList.contains('open');
+            
+            if (isOpen) {
+                content.classList.remove('open');
+                chevron.classList.remove('rotate');
+                parent.classList.remove('active');
+                chevronContainer.classList.remove('bg-orange-500', 'text-white');
+                chevronContainer.classList.add('bg-neutral-800', 'text-neutral-400');
+                title.classList.remove('text-white');
+                title.classList.add('text-neutral-300');
+                number.classList.remove('text-orange-500');
+                number.classList.add('text-neutral-600');
+            } else {
+                content.classList.add('open');
+                chevron.classList.add('rotate');
+                parent.classList.add('active');
+                chevronContainer.classList.remove('bg-neutral-800', 'text-neutral-400');
+                chevronContainer.classList.add('bg-orange-500', 'text-white');
+                title.classList.remove('text-neutral-300');
+                title.classList.add('text-white');
+                number.classList.remove('text-neutral-600');
+                number.classList.add('text-orange-500');
+            }
+        }
+
+        // --- ÉCOUTEURS D'ÉVÉNEMENTS & DONNÉES ---
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // Menu Mobile
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('open'); });
+            }
+
+            // Bouton Toggle Parcours (Secours si onclick ne marche pas)
+            const expBtn = document.getElementById('exp-toggle-btn');
+            if(expBtn) {
+                expBtn.addEventListener('click', toggleExperience);
+            }
+
+            // --- DONNÉES PARCOURS PRO ---
+            const EXPERIENCES = [
+                { role: "Coordinatrice Transport VIP", company: "On Location", year: "2024", contract: "Mission / CDD", icon: "car", desc: "Coordination opérationnelle et communication 100% en anglais. Gestion des imprévus en temps réel pour une clientèle VIP." },
+                { role: "Community Manager & Commerciale", company: "L'Orange Bleue", year: "2023", contract: "Alternance", icon: "instagram", desc: "Création de contenus réseaux sociaux, mise en avant de l'activité et gestion de la relation adhérents." },
+                { role: "Agent Services Généraux", company: "SYNERGIE", year: "2022", contract: "CDD / Intérim", icon: "settings", desc: "Support logistique, coordination des fournisseurs et gestion des besoins des agences." },
+                { role: "Marketing & Stratégie", company: "Ekin Sport", year: "2022", contract: "Projet Académique", icon: "target", desc: "Analyse d'un cas client complet et élaboration de recommandations stratégiques." },
+                { role: "Chargée de Com & Évènementiel", company: "MDA", year: "2022", contract: "Stage", icon: "party-popper", desc: "Organisation du Week-end camping Evasion (1500 participants). Logistique et communication." },
+                { role: "Assistante Administrative", company: "Crédit Mutuel Leasing", year: "2021", contract: "Alternance", icon: "file-text", desc: "Gestion des tickets informatiques internes, suivi des mobilités et mouvements collaborateurs." },
+                { role: "Chargée de Recrutement", company: "City One", year: "2021", contract: "CDD", icon: "users", desc: "Sourcing, entretiens, sélection des profils et suivi des équipes terrain." },
+                { role: "Assistante RH", company: "Leroy Merlin", year: "2020", contract: "Stage", icon: "user-plus", desc: "Création de supports d'intégration (onboarding) pour les nouveaux collaborateurs." },
+                { role: "Animatrice", company: "Junior & Cie (SNCF)", year: "2019-2022", contract: "Job Étudiant", icon: "train", desc: "Accompagnement et animation pour enfants lors de trajets longue distance." }
+            ];
+
+            // Rendu Expériences
+            const expList = document.getElementById('experience-list');
+            if(expList) {
+                EXPERIENCES.forEach((exp, index) => {
+                    const html = `
+                        <div class="relative flex gap-6 group">
+                            <!-- Point de la Timeline -->
+                            <div class="hidden md:flex absolute -left-[2.1rem] top-6 items-center justify-center">
+                                <div class="w-4 h-4 rounded-full bg-neutral-800 border-2 border-neutral-700 group-hover:bg-orange-500 group-hover:border-orange-500 transition-colors z-10"></div>
+                            </div>
+                            <!-- Carte Contenu -->
+                            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-xl flex-1 hover:border-orange-500/30 transition-all">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-3 gap-2">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-neutral-800 rounded-lg flex items-center justify-center text-neutral-400 group-hover:text-orange-500 transition-all">
+                                            <i data-lucide="${exp.icon}" class="w-4 h-4"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-white font-bold text-sm md:text-base leading-tight">${exp.role}</h4>
+                                            <p class="text-orange-400 text-xs font-medium">${exp.company}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 md:flex-col md:items-end md:gap-1">
+                                        <span class="text-[10px] font-mono font-bold text-white bg-neutral-700/50 px-2 py-0.5 rounded border border-neutral-700">${exp.year}</span>
+                                        <span class="text-[10px] font-bold text-orange-300 bg-orange-900/20 px-2 py-0.5 rounded border border-orange-500/20">${exp.contract}</span>
+                                    </div>
+                                </div>
+                                <p class="text-neutral-400 text-xs md:text-sm leading-relaxed">${exp.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                    expList.insertAdjacentHTML('beforeend', html);
+                });
+            }
+
+            // --- DONNÉES COMPÉTENCES ---
+            const SKILLS_DATA = [
+                { title: "UX DESIGN (en formation)", items: ["Recherche utilisateur (observations, analyse des besoins)", "Personas et cartes d’empathie", "Parcours utilisateurs (user journey)", "Architecture de l’information", "Wireframes et prototypage (Figma)", "Tests utilisateurs et itérations", "Formation UX/UI – certification Google UX Design (en cours)"] },
+                { title: "DESIGN VISUEL & OUTILS GRAPHIQUES", items: ["Bases en Photoshop, Illustrator et InDesign", "Mise en page et grilles", "Hiérarchie visuelle", "Typographie et couleurs", "Création de supports digitaux et print"] },
+                { title: "GESTION DE PROJET", items: ["Coordination et planification", "Organisation des priorités", "Suivi des actions et livrables", "Travail en transversalité", "Respect des délais et contraintes"] },
+                { title: "MARKETING & ANALYSE", items: ["Études de marché", "Benchmark concurrentiel", "Analyse des cibles", "Analyse de parcours existants", "Identification des points de friction", "Veille et compréhension des enjeux business"] },
+                { title: "COMMUNICATION & COMMUNITY MANAGEMENT", items: ["Animation de communauté", "Création de contenus visuels et vidéos promotionnelles", "Réalisation d’interviews", "Élaboration de plannings éditoriaux", "Planification et programmation via Meta", "Communication autour de projets et événements"] },
+                { title: "PRODUCTION VIDÉO & AUDIOVISUEL", items: ["Montage de vidéos promotionnelles", "Formats courts pour réseaux sociaux", "Valorisation d’événements", "Storytelling visuel", "Adaptation des contenus aux plateformes"] },
+                { title: "COMMERCIAL & RELATION CLIENT", items: ["Accueil et accompagnement client", "Analyse des besoins", "Présentation et vente d’offres", "Argumentation commerciale", "Suivi et fidélisation", "Gestion des objections et situations sensibles"] },
+                { title: "ÉVÈNEMENTIEL & COORDINATION", items: ["Organisation et coordination d’événements", "Gestion des plannings et des priorités", "Accueil et prise en charge de publics (dont VIP)", "Coordination d’équipes et d’intervenants", "Communication événementielle", "Gestion des imprévus et respect des timings"] },
+                { title: "RESSOURCES HUMAINES & COORDINATION", items: ["Coordination d’équipes et d’intervenants", "Gestion des plannings", "Communication interne", "Interface entre équipes, prestataires et direction", "Suivi opérationnel des ressources"] },
+                { title: "ADMINISTRATIF & GESTION OPÉRATIONNELLE", items: ["Gestion administrative et suivi de dossiers", "Facturation et suivi des paiements", "Organisation et archivage de documents", "Structuration de l’information", "Respect des procédures"] }
+            ];
+
+            // Rendu Compétences
+            const skillsContainer = document.getElementById('skills-container');
+            if(skillsContainer) {
+                SKILLS_DATA.forEach((skill, index) => {
+                    const number = (index + 1).toString().padStart(2, '0');
+                    const html = `
+                        <div class="bg-neutral-900 rounded-xl border border-neutral-800 overflow-hidden accordion-border transition-all duration-300 hover:border-neutral-700">
+                            <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between p-5 text-left group cursor-pointer">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-sm font-mono font-bold tracking-wider text-neutral-600 group-hover:text-neutral-500 accordion-number transition-colors">${number}</span>
+                                    <span class="font-bold text-base md:text-lg text-neutral-300 group-hover:text-white accordion-title transition-colors">${skill.title}</span>
+                                </div>
+                                <div class="p-2 rounded-full bg-neutral-800 text-neutral-400 group-hover:bg-neutral-700 transition-all duration-300 chevron-container">
+                                    <i data-lucide="chevron-down" class="w-4 h-4 chevron"></i>
+                                </div>
+                            </button>
+                            <div class="accordion-content"><div class="accordion-inner"><div class="px-5 pb-6 pt-0 ml-0 md:ml-10 border-l border-neutral-800 md:border-l-0"><ul class="space-y-3">
+                                ${skill.items.map(item => `<li class="flex items-start gap-3 text-neutral-400 text-sm leading-relaxed group/item hover:text-neutral-300 transition-colors"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-orange-500/40 group-hover/item:bg-orange-500 flex-shrink-0 transition-colors"></span><span>${item}</span></li>`).join('')}
+                            </ul></div></div></div>
+                        </div>
+                    `;
+                    skillsContainer.insertAdjacentHTML('beforeend', html);
+                });
+            }
+
+            // --- DONNÉES FORMATIONS ---
+            const EDUCATION_DATA = [
+                { year: "2025 (En cours)", degree: "Prépa Mastère Digital", school: "Digital Campus", icon: "graduation-cap" },
+                { year: "En cours", degree: "Certificat Google UX Design", school: "Google Career Certificates", icon: "award" },
+                { year: "En cours", degree: "Spécialisation UX Research", school: "University of Michigan", icon: "search" },
+                { year: "2022-2023", degree: "Bachelor Management du Sport", school: "Sport Management School", icon: "trophy" },
+                { year: "2020-2022", degree: "BTS Support à l'Action Manageriale", school: "Lycée Marie Curie", icon: "file-text" },
+                { year: "2021", degree: "BAFA", school: "Brevet d'Aptitude aux Fonctions d'Animateur", icon: "users" },
+                { year: "2018", degree: "Baccalauréat ES", school: "Lycée Denis Diderot", icon: "graduation-cap" }
+            ];
+
+            // Rendu Marquee
+            const marqueeContainer = document.getElementById('education-marquee');
+            if(marqueeContainer) {
+                const marqueeData = [...EDUCATION_DATA, ...EDUCATION_DATA];
+                marqueeData.forEach(edu => {
+                    const html = `
+                        <div class="w-[300px] bg-neutral-900 p-6 rounded-xl border border-neutral-800 flex flex-col gap-4 hover:border-orange-500/50 transition-colors group cursor-default flex-shrink-0">
+                            <div class="flex justify-between items-start">
+                                <div class="p-3 bg-neutral-800 rounded-lg text-orange-500 group-hover:bg-orange-900/20 group-hover:scale-110 transition-all"><i data-lucide="${edu.icon}" class="w-6 h-6"></i></div>
+                                <span class="text-xs font-mono font-medium text-orange-400/80 bg-orange-900/10 px-2 py-1 rounded">${edu.year}</span>
+                            </div>
+                            <div><h4 class="font-bold text-white text-lg leading-tight mb-1">${edu.degree}</h4><p class="text-neutral-400 text-sm">${edu.school}</p></div>
+                        </div>
+                    `;
+                    marqueeContainer.insertAdjacentHTML('beforeend', html);
+                });
+            }
+
+            // Intersection Observer (Marquee start)
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+            }, { threshold: 0.1 });
+            const marqueeElement = document.getElementById('education-marquee');
+            if (marqueeElement) observer.observe(marqueeElement);
+
+            // Init Icônes
+            lucide.createIcons();
+        });
+    </script>
+    
+    <!-- NOTE HUBSPOT : Décommentez la ligne suivante si hébergé sur HubSpot -->
+    <!-- {{ standard_footer_includes }} -->
+</body>
+</html>
